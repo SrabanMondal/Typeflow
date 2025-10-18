@@ -1,0 +1,52 @@
+[project]
+name = "typeflow"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Sraban Mondal",email = "srabanmondal1@gmail.com"}
+]
+readme = "README.md"
+license = { text = "GNU GPLv3" }
+requires-python = ">=3.12"
+dependencies = [
+    "typer (>=0.19.2,<0.20.0)"
+]
+
+[tool.poetry]
+packages = [{include = "typeflow", from = "src"}]
+include = [
+    { path = "src/typeflow/ui/assets/**/*", format = "wheel" },
+]
+
+[project.scripts]
+typeflow = "typeflow.cli.main:app"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.mypy]
+strict = true
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "ruff (>=0.14.1,<0.15.0)",
+    "mypy (>=1.18.2,<2.0.0)",
+    "pytest (>=8.4.2,<9.0.0)",
+    "pytest-cov (>=7.0.0,<8.0.0)",
+    "black (>=25.9.0,<26.0.0)",
+    "isort (>=7.0.0,<8.0.0)"
+]
