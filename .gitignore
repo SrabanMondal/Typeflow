@@ -48,3 +48,6 @@ yarn-error.log*
 # =============================
 .DS_Store
 Thumbs.db
+
+.typeflow/
+test_cli/

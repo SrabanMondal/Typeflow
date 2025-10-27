@@ -2,7 +2,7 @@ import yaml
 import os
 import tempfile
 from pathlib import Path
-from typeflow.sdk.node import node
+from typeflow import node
 
 def test_node_decorator_creates_yaml(tmp_path):
     # Setup temporary .typeflow directory
@@ -26,7 +26,7 @@ def test_node_decorator_creates_yaml(tmp_path):
     data = yaml.safe_load(open(yaml_file))
     assert data["name"] == "add"
     assert data["inputs"] == {"a": "int", "b": "int"}
-    assert data["output"] == "int"
+    assert data["returns"] == "int"
     assert "Add two integers" in data["description"]
 
     os.chdir(cwd)
