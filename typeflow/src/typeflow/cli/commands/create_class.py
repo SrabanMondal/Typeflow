@@ -13,11 +13,13 @@ def create_class(class_name: str):
 
     # Check for .typeflow folder
     if not (cwd / ".typeflow").exists():
-        typer.echo("Error: Cannot detect .typeflow folder."
-                   "Run this command from the root of your typeflow project.")
+        typer.echo(
+            "Error: Cannot detect .typeflow folder."
+            "Run this command from the root of your typeflow project."
+        )
         raise typer.Exit(code=1)
 
-    class_folder = cwd / "class"
+    class_folder = cwd / "src" / "classes"
     class_folder.mkdir(exist_ok=True)
 
     class_file = class_folder / f"{class_name}.py"

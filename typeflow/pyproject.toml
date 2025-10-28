@@ -11,7 +11,8 @@ requires-python = ">=3.12"
 dependencies = [
     "typer (>=0.19.2,<0.20.0)",
     "pydantic (>=2.12.3,<3.0.0)",
-    "pyyaml (>=6.0.3,<7.0.0)"
+    "pyyaml (>=6.0.3,<7.0.0)",
+    "uv (>=0.9.5,<0.10.0)"
 ]
 
 [tool.poetry]

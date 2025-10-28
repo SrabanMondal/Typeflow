@@ -33,6 +33,7 @@ def node():
         metadata = {
             "name": func.__name__,
             "node_type": "private",
+            "entity":     "function",
             "inputs": {
                 param_name: simplify_type(type_hints.get(param_name))
                 for param_name in sig.parameters

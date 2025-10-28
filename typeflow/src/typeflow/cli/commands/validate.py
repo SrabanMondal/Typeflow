@@ -1,11 +1,12 @@
 import ast
-import runpy
 from pathlib import Path
-
+import sys
+import subprocess
 import typer
 import yaml
 
 app = typer.Typer(help="Validate nodes or classes")
+
 
 def check_decorator(file_path: Path, decorator_name: str) -> bool:
     """
@@ -20,7 +21,11 @@ def check_decorator(file_path: Path, decorator_name: str) -> bool:
             for dec in node.decorator_list:
                 if isinstance(dec, ast.Name) and dec.id == decorator_name:
                     return True
-                if isinstance(dec, ast.Call) and isinstance(dec.func, ast.Name) and dec.func.id == decorator_name:
+                if (
+                    isinstance(dec, ast.Call)
+                    and isinstance(dec.func, ast.Name)
+                    and dec.func.id == decorator_name
+                ):
                     return True
     return False
 
@@ -42,7 +47,8 @@ def update_workflow_yaml(item_name: str, section: str):
         data[section].append(item_name)
 
     with open(workflow_file, "w") as f:
-        yaml.safe_dump(data, f)
+        yaml.safe_dump(data, f, sort_keys=False)
+
 
 # ---------------- NODE SUBCOMMAND ----------------
 @app.command("node")
@@ -52,14 +58,19 @@ def validate_node(node_name: str):
         typer.echo("Error: Cannot detect .typeflow folder. Run from project root.")
         raise typer.Exit(code=1)
 
-    node_file = cwd / "nodes" / node_name / "main.py"
+    node_file = cwd/ "src" / "nodes" / node_name / "main.py"
     if not node_file.exists():
         typer.echo(f"Error: Node '{node_name}' does not exist.")
         raise typer.Exit(code=1)
-
+    module_path = f"src.nodes.{node_name}.main"
+    
     try:
-        runpy.run_path(str(node_file), run_name="__main__")
-    except Exception as e:
+        subprocess.run(
+            [sys.executable, "-m", module_path],
+            cwd=cwd,
+            check=True,
+        )
+    except subprocess.CalledProcessError as e:
         typer.echo(f"Runtime Error in node '{node_name}': {e}")
         raise typer.Exit(code=1)
 
@@ -70,6 +81,7 @@ def validate_node(node_name: str):
     update_workflow_yaml(node_name, "nodes")
     typer.echo(f"Node '{node_name}' validated and added to workflow.yaml")
 
+
 # ---------------- CLASS SUBCOMMAND ----------------
 @app.command("class")
 def validate_class(class_name: str):
@@ -78,15 +90,21 @@ def validate_class(class_name: str):
         typer.echo("Error: Cannot detect .typeflow folder. Run from project root.")
         raise typer.Exit(code=1)
 
-    class_file = cwd / "class" / f"{class_name}.py"
+    class_file = cwd / "src" / "classes" / f"{class_name}.py"
     if not class_file.exists():
         typer.echo(f"Error: Class '{class_name}' does not exist.")
         raise typer.Exit(code=1)
 
+    module_path = f"src.classes.{class_name}"
+    
     try:
-        runpy.run_path(str(class_file), run_name="__main__")
-    except Exception as e:
-        typer.echo(f"Runtime Error in class '{class_name}': {e}")
+        subprocess.run(
+            [sys.executable, "-m", module_path],
+            cwd=cwd,
+            check=True,
+        )
+    except subprocess.CalledProcessError as e:
+        typer.echo(f"Runtime Error in node '{class_name}': {e}")
         raise typer.Exit(code=1)
 
     if not check_decorator(class_file, "node_class"):
@@ -95,4 +113,3 @@ def validate_class(class_name: str):
 
     update_workflow_yaml(class_name, "classes")
     typer.echo(f"Class '{class_name}' validated and added to workflow.yaml")
-

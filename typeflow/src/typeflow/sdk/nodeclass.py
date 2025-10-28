@@ -31,7 +31,8 @@ def node_class(cls):
 
     # Fields → ports
     for field_name, field_type in type_hints.items():
-        metadata["fields"][field_name] = {"type": simplify_type(field_type)}
+        metadata["fields"][field_name] = simplify_type(field_type)
+    metadata["fields"]["self"] = cls.__name__
 
     # Methods → callable ports
     for name, method in inspect.getmembers(cls, predicate=inspect.isfunction):
@@ -44,6 +45,7 @@ def node_class(cls):
             for p in sig.parameters.values()
             if p.name != "self"
         }
+        params["self"] = cls.__name__
         ret_type = simplify_type(sig.return_annotation)
 
         metadata["methods"][name] = {
@@ -55,7 +57,7 @@ def node_class(cls):
 
     # ---------- Save YAML ----------
     project_root = get_project_root()
-    class_dir = os.path.join(project_root, ".typeflow", "class")
+    class_dir = os.path.join(project_root, ".typeflow", "classes")
     try:
         os.makedirs(class_dir, exist_ok=True)
     except PermissionError:

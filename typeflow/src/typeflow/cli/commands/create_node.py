@@ -4,8 +4,8 @@ import typer
 
 from ..template import node_template
 
-
 MAIN_PY_TEMPLATE = node_template.NODE_TEMPLATE
+
 
 def create_node(node_name: str):
     """
@@ -14,11 +14,13 @@ def create_node(node_name: str):
     cwd = Path.cwd()
 
     if not (cwd / ".typeflow").exists():
-        typer.echo("Error: Cannot detect .typeflow folder."
-                   "Run this command from the root of your typeflow project.")
+        typer.echo(
+            "Error: Cannot detect .typeflow folder."
+            "Run this command from the root of your typeflow project."
+        )
         raise typer.Exit(code=1)
 
-    node_folder = cwd / "nodes" / node_name
+    node_folder = cwd / "src" / "nodes" / node_name
     if node_folder.exists():
         typer.echo(f"Error: Node '{node_name}' already exists.")
         raise typer.Exit(code=1)
