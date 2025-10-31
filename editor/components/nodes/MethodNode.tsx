@@ -1,6 +1,6 @@
 "use client";
 import { Handle, Position } from "@xyflow/react";
-import { FunctionNodeDef } from "@/types/node";
+import { MethodDef } from "@/types/node";
 import {
   Tooltip,
   TooltipContent,
@@ -8,26 +8,38 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-interface FunctionNodeProps {
+interface MethodNodeProps {
   id: string;
-  data: FunctionNodeDef;
+  data: MethodDef;
 }
 
-export default function FunctionNode({ id, data }: FunctionNodeProps) {
-  const { name, description, inputPorts = [], outputPorts = [] } = data;
+export default function MethodNode({ id, data }: MethodNodeProps) {
+  const { name, is_static, description, inputPorts = [], outputPorts = [] } = data;
 
-  // total rows = max(inputs, outputs)
+  const cleaned = name.split(":");
+  const className = cleaned[0].split("@")[0];
+  const methodName = cleaned[1];
+
+  // number of grid rows = max(inputPorts, outputPorts)
   const totalRows = Math.max(inputPorts.length, outputPorts.length);
 
   return (
     <TooltipProvider delayDuration={150}>
       <div
-        key={id}
-        className="relative rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-all w-56"
+        className={`relative rounded-xl border bg-white shadow-sm hover:shadow-md transition-all w-56
+          ${is_static ? "border-purple-300" : "border-emerald-300"}
+        `}
       >
         {/* Header */}
-        <div className="text-sm font-semibold px-3 py-1 border-b border-gray-200 bg-blue-50 text-blue-700 truncate rounded-t-xl">
-          ⚙️ {name}
+        <div
+          className={`text-sm font-semibold px-3 py-1 border-b truncate rounded-t-xl
+            ${
+              is_static
+                ? "bg-purple-50 text-purple-700 border-purple-200"
+                : "bg-emerald-50 text-emerald-700 border-emerald-200"
+            }`}
+        >
+          🧩 {className}.{methodName}()
         </div>
 
         {/* Description */}
@@ -51,17 +63,17 @@ export default function FunctionNode({ id, data }: FunctionNodeProps) {
             paddingBottom: "4px",
           }}
         >
-          {/* Input Handles */}
+          {/* Input handles */}
           {inputPorts.map((port, i) => (
             <Tooltip key={`in-${port}`}>
               <TooltipTrigger asChild>
                 <Handle
-                  id={`${port}`}
+                  id={port}
                   type="target"
                   position={Position.Left}
-                  className="absolute bg-blue-400! hover:bg-blue-600! w-2.5! h-2.5! transition-all duration-150 cursor-pointer hover:ring-2 hover:ring-blue-300!"
+                  className="absolute bg-blue-400! hover:bg-blue-600! w-2.5! h-2.5! transition-colors cursor-pointer"
                   style={{
-                    top: `${(i ) * (100 / totalRows)}%`,
+                    top: `${i * 100 / totalRows}%`,
                     transform: "translateY(-50%)",
                   }}
                 />
@@ -75,17 +87,17 @@ export default function FunctionNode({ id, data }: FunctionNodeProps) {
             </Tooltip>
           ))}
 
-          {/* Output Handles */}
+          {/* Output handles */}
           {outputPorts.map((port, i) => (
             <Tooltip key={`out-${port}`}>
               <TooltipTrigger asChild>
                 <Handle
-                  id={`${port}`}
+                  id={port}
                   type="source"
                   position={Position.Right}
-                  className="absolute bg-green-400! hover:bg-green-600! w-2.5! h-2.5! transition-all duration-150 cursor-pointer hover:ring-2 hover:ring-green-300!"
+                  className="absolute bg-green-400! hover:bg-green-600! w-2.5! h-2.5! transition-colors cursor-pointer"
                   style={{
-                    top: `${(i ) * (100 / totalRows)}%`,
+                    top: `${i * 100 / totalRows}%`,
                     transform: "translateY(-50%)",
                   }}
                 />

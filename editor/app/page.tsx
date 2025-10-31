@@ -1,7 +1,11 @@
-import Basic from "@/components/basic";
+import Editor from "@/components/NodeEditor/NodeEditor";
+import Sidebar from "@/components/NodeEditor/SideBar";
 
-export default function Home() {
+export default function Page() {
   return (
-      <Basic/>
+    <div className="flex h-screen">
+      <Editor />
+      <Sidebar />
+    </div>
   );
 }
