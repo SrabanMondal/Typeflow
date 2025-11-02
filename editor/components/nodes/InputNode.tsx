@@ -2,7 +2,7 @@
 import { Handle, Position } from "@xyflow/react";
 import { InputNodeDef } from "@/types/node";
 import { useState, useCallback } from "react";
-import { useWorkflowState } from "@/hooks/useWorkflowState";
+import { useUpdateXNode } from "@/hooks/useUpdateNode";
 
 interface InputNodeProps {
   id: string;
@@ -10,21 +10,20 @@ interface InputNodeProps {
 }
 
 export default function InputNode({ id, data }: InputNodeProps) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(data.value);
   const [isValid, setIsValid] = useState(true);
-  const { updateNodeData } = useWorkflowState();
-
+  const { updateXNodeData } = useUpdateXNode();
   const checkValid = useCallback(
     (val: string): boolean => {
       try {
         switch (data.valueType) {
-          case "string":
+          case "str":
             return true;
-          case "integer":
+          case "int":
           case "number":
           case "float":
             return !isNaN(Number(val));
-          case "boolean":
+          case "bool":
             return ["true", "false", "1", "0"].includes(val.toLowerCase());
           case "list":
           case "set": {
@@ -53,9 +52,9 @@ export default function InputNode({ id, data }: InputNodeProps) {
       const valid = checkValid(newVal);
       setIsValid(valid);
 
-      updateNodeData(id, { value: newVal });
+      updateXNodeData(id, { value: newVal });
     },
-    [id, updateNodeData, checkValid]
+    [id, updateXNodeData, checkValid]
   );
 
   return (

@@ -10,7 +10,7 @@ import {
 } from "@xyflow/react";
 import nodeTypes from "@/components/nodes";
 import { useWorkflowState, WorkflowNode } from "@/hooks/useWorkflowState";
-import FileModal from "./utils/FileModal";
+import { getDag, saveWorkflow } from "@/lib/workflow";
 
 function EditorInner() {
   const { screenToFlowPosition } = useReactFlow();
@@ -29,7 +29,6 @@ function EditorInner() {
 
   const [selectedNodes, setSelectedNodes] = useState<WorkflowNode[]>([]);
   const [selectedEdges, setSelectedEdges] = useState<Edge[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onSelectionChange = useCallback((selection: { nodes: WorkflowNode[]; edges: Edge[] }) => {
     setSelectedNodes(selection.nodes as WorkflowNode[]);
@@ -39,7 +38,7 @@ function EditorInner() {
   // DELETE key handler
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Delete" || event.key === "Backspace") {
+      if (event.key === "Delete") {
         selectedNodes.forEach((n) => removeNode(n.id));
         selectedEdges.forEach((e) => removeEdge(e.id));
       }
@@ -70,27 +69,22 @@ function EditorInner() {
   };
 
   // 🔹 Export handler
-  const handleExport = useCallback(() => {
+  const handleExport = async () => {
     const json = exportWorkflow("workflow");
-    console.log("Exported workflow:", json);
+    const save = await saveWorkflow(json);
+    console.log(save.status);
+  }
 
-    // download as file
-    const blob = new Blob([JSON.stringify(json, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "workflow.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  }, [exportWorkflow]);
 
-  // 🔹 Import handler
-  const handleImport = useCallback(
-    (data: any) => {
-      importWorkflow(data);
-    },
-    [importWorkflow]
-  );
+  const handleImportButton = async ()=>{
+     const workflow = await getDag();
+     if(workflow){
+       importWorkflow(workflow)
+      }
+      else{
+        console.log("Workflow import failed")
+      }
+  }
 
   return (
     <div className="editor relative flex-1 h-full">
@@ -103,7 +97,7 @@ function EditorInner() {
           Export
         </button>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleImportButton}
           className="px-4 py-2 bg-linear-to-r from-emerald-500 to-teal-500 text-white font-medium rounded-lg shadow-md hover:scale-105 transition-transform"
         >
           Import
@@ -125,11 +119,6 @@ function EditorInner() {
         <Controls />
       </ReactFlow>
 
-      <FileModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onImport={handleImport}
-      />
     </div>
   );
 }

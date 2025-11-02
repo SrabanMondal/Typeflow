@@ -1,6 +1,8 @@
 from collections import deque
 from pathlib import Path
-from typeflow.utils import load_const, format_yaml_val
+
+from typeflow.utils import format_yaml_val, load_const
+
 # -------------------------------
 # Graph utilities
 # -------------------------------
@@ -49,7 +51,9 @@ def instance_name_from_cls_key(cls_key):
 
 def port_to_expr(src_node, src_handle):
     if src_node.startswith("X:"):
-        return src_node.split(":")[1]
+        name_id = src_node.split(":")[1]
+        name, vid = name_id.split("@")
+        return f"{name}_{vid}"
     elif src_node.startswith("C:"):
         parts = src_node.split(":")
         if len(parts) == 2:
@@ -63,6 +67,7 @@ def port_to_expr(src_node, src_handle):
         func_name = func_key.split("@")[0]
         return f"{func_name}_out"
     return src_node.replace(":", "_")
+
 
 def generate_imports(adj_list):
     """Generate import lines based on nodes present in the DAG."""
@@ -84,6 +89,7 @@ def generate_imports(adj_list):
     # sort for deterministic output
     return sorted(imports)
 
+
 # -------------------------------
 # Core script generator
 # -------------------------------
@@ -100,7 +106,7 @@ def generate_script(adj_list, rev_adj_list):
     lines = ["# Auto-generated workflow script\n"]
     lines.extend(import_lines)
     lines.append("\n")
-    
+
     def get_parents(node):
         return find_parent(node, rev_adj_list)
 
@@ -109,12 +115,13 @@ def generate_script(adj_list, rev_adj_list):
 
         # ----- Input constants -----
         if node_type == "X":
-            name = node.split(":")[1]
+            name_id = node.split(":")[1]
+            name, vid = name_id.split("@")
             val = None
-            node_data = ports.get(name, None)
+            node_data = ports.get(name_id, None)
             if node_data:
                 val = format_yaml_val(node_data)
-            lines.append(f"{name} = {val}")
+            lines.append(f"{name}_{vid} = {val}")
             continue
 
         # ----- Components -----

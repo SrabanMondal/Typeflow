@@ -56,21 +56,28 @@ export function useWorkflowState() {
     [setNodes, setEdges]
   );
 
-  const updateNodeData = useCallback((id: string, updates: Partial<InputNodeDef>) => {
-    setNodes((nds) =>
-      nds.map((node) =>
-        node.id === id && node.data.entity=="X"? { ...node, data: { ...node.data, ...updates } } : node
-      )
-    );
-  }, [setNodes]);
 
   const addConnection = useCallback(
-    (conn: Connection) => {
-      if (!conn.source || !conn.target) return;
-      setEdges((eds) => addEdge(conn, eds));
-    },
-    [setEdges]
-  );
+  (conn: Connection) => {
+    if (!conn.source || !conn.target) return;
+
+    setEdges((eds) => {
+      // check if this target port is already occupied
+      const targetOccupied = eds.some(
+        (e) => e.target === conn.target && e.targetHandle === conn.targetHandle
+      );
+
+      if (targetOccupied) {
+        console.warn("❌ Target handle already has a connection!");
+        return eds;
+      }
+
+      return addEdge(conn, eds);
+    });
+  },
+  [setEdges]
+);
+
 
   const removeEdge = useCallback(
   (idOrPredicate: string | ((e: RFEdge) => boolean)) => {
@@ -120,7 +127,6 @@ const importWorkflow = useCallback(
     // actions
     addNode,
     removeNode,
-    updateNodeData,
     addConnection,
     removeEdge,
     resetWorkflow,

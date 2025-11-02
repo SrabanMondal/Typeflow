@@ -28,7 +28,7 @@ export interface FunctionNodeDef extends Record<string, unknown> {
 export interface InputNodeDef extends Record<string, unknown> {
   entity: "X";
   name: string;
-  valueType: "string" | "number" | "integer" | "float" | "boolean" | "list" | "dict" | "set";
+  valueType: "str" | "number" | "int" | "float" | "bool" | "list" | "dict" | "set";
   description: string;
   outputPorts: string[];
   value: string;

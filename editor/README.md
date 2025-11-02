@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎨 TypeFlow Editor (UI)
 
-## Getting Started
+**Visual Workflow Builder for TypeFlow**
 
-First, run the development server:
+TypeFlow Editor is a **React Flow–powered visual DAG builder**, built with **Next.js**, that connects to the **TypeFlow backend (FastAPI)** to visualize, create, and manage **type-safe Python workflows**.
 
+It provides an **intuitive, drag-and-drop interface** to:
+
+- Browse available function/class nodes (from YAML manifests)  
+- Drag & drop nodes into the canvas  
+- Connect ports **with type safety**  
+- Export DAGs as JSON  
+- Save and load workflows via REST API  
+
+---
+
+## 🧩 Overview
+
+| Component | Role |
+|---------|------|
+| 🎨 **React Flow Canvas** | Interactive visual DAG editor |
+| 🧠 **Node Inspector Panel** | Displays metadata, inputs/outputs, and type hints |
+| 🗂 **Node Library Sidebar** | Loads available nodes from backend `/api` |
+| 📡 **API Integration** | Communicates with FastAPI for import/save |
+| 💾 **Persistent Storage** | Saves DAGs into `workflow/dag.json` |
+| ⚙️ **Build Integration** | Exported as static site for `typeflow start ui` |
+
+---
+
+## 🧰 Tech Stack
+
+- ⚛️ **Next.js 14** (App Router)  
+- 🌀 **React Flow** – Interactive node-based graphs  
+- 🎨 **Tailwind CSS + Shadcn/UI** – Beautiful, accessible components  
+- 🔗 **Axios** – REST communication with FastAPI backend  
+
+---
+
+## 🚀 Getting Started
+
+### 1. Start the TypeFlow backend
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+typeflow start ui
 ```
+Launches FastAPI at [`http://localhost:3000`](http://localhost:3000)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> This serves both the **UI (static Next.js export)** and **API endpoints**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Open the Editor
+Navigate to: [`http://localhost:3000`](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🎯 Key Features
 
-To learn more about Next.js, take a look at the following resources:
+### **Node Library**
+- Fetches all registered nodes from `/api`
+- Shows name, description, input/output ports with **type annotations**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### **Drag & Drop Workflow Design**
+- Pull nodes from sidebar → drop on canvas
+- Auto-generated input/output handles based on type hints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### **Type-Safe Connections**
+- Only allows edges between **compatible types**
+- Visual feedback on invalid connections
 
-## Deploy on Vercel
+### **DAG Persistence**
+- Save workflow → `POST /api/save` → writes to `dag.json`
+- Load on startup → `GET /api/dag`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 💡 Future Roadmap
+
+| Feature | Status |
+|-------|--------|
+| Type-aware edge validation (client-side preview) | Planned |
+| Multi-workflow project support | Planned |
+| Searchable & categorized node library | Planned |
+| Auto-layout engine (Dagre) | Planned |
+| Inline node code viewer | Planned |
+| Realtime collaboration (WebSocket sync) | Planned |
+
+---
+
+## 🤝 Contributing
+
+Contributions are **welcome** — the UI is modular and easy to extend!
+
+### How to Contribute
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a Pull Request
+
+### Ideas to Contribute
+- Add new custom node types
+- Improve editor layout and UX
+- Enhance DAG validation or animations
+- Add keyboard shortcuts
+- Implement undo/redo
+- Support dark mode toggle
+
+---
+
+## 🧾 License
+
+**MIT License** © 2025 TypeFlow
+
+---
+
+**TypeFlow Editor** — *Design workflows visually. Run them reliably.*  
+
+Built for developers who believe **type safety shouldn’t end at code**.

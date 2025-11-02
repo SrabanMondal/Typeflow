@@ -14,25 +14,26 @@ export default function ClassNode({ id, data }: { id: string; data: ClassNodeDef
   const [showToolbar, setShowToolbar] = useState(false);
   const { addMethodNode } = useSubNodeManager(id);
 
-  const totalRows = Math.max(data.inputPorts.length, data.outputPorts.length);
+  const { name, description, inputPorts = [], outputPorts = [], methods = [] } = data;
+
+  const totalRows = Math.max(inputPorts.length, outputPorts.length);
 
   return (
     <TooltipProvider delayDuration={150}>
       <div
         key={id}
         onDoubleClick={() => setShowToolbar((s) => !s)}
-        className="relative rounded-xl border bg-white shadow-sm hover:shadow-md transition-all w-56 cursor-pointer"
-        style={{ height: `${Math.max(80, totalRows * 20 + 40)}px` }} // dynamic height
+        className="relative rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-all w-56 cursor-pointer"
       >
         {/* Header */}
-        <div className="text-sm font-semibold px-3 py-1 border-b border-blue-200 bg-blue-50 text-blue-700 truncate rounded-t-xl">
-          🏛 {data.name}
+        <div className="text-sm font-semibold px-3 py-1 border-b border-gray-200 bg-purple-50 text-purple-700 truncate rounded-t-xl">
+          🏛 {name}
         </div>
 
         {/* Description */}
-        {data.description ? (
+        {description ? (
           <div className="px-3 py-2 text-[11px] text-gray-600 line-clamp-3">
-            {data.description}
+            {description}
           </div>
         ) : (
           <div className="px-3 py-2 italic text-[11px] text-gray-400">
@@ -40,7 +41,7 @@ export default function ClassNode({ id, data }: { id: string; data: ClassNodeDef
           </div>
         )}
 
-        {/* Port Grid */}
+        {/* Port Grid (EXACT same structure as FunctionNode) */}
         <div
           className="relative grid"
           style={{
@@ -51,16 +52,16 @@ export default function ClassNode({ id, data }: { id: string; data: ClassNodeDef
           }}
         >
           {/* Input Handles */}
-          {data.inputPorts.map((port, i) => (
+          {inputPorts.map((port, i) => (
             <Tooltip key={`in-${port}`}>
               <TooltipTrigger asChild>
                 <Handle
                   id={`${port}`}
                   type="target"
                   position={Position.Left}
-                  className="absolute bg-blue-400! hover:bg-blue-600! w-2.5! h-2.5! transition-all duration-150 cursor-pointer hover:ring-2 hover:ring-blue-300!"
+                  className="absolute bg-blue-400! hover:bg-blue-600! w-2.5 h-2.5 transition-all duration-150 cursor-pointer hover:ring-2 hover:ring-blue-300!"
                   style={{
-                    top: `${(i + 0.5) * (100 / totalRows)}%`,
+                    top: `${((i + 0.5) * 100) / totalRows}%`,
                     transform: "translateY(-50%)",
                   }}
                 />
@@ -75,16 +76,16 @@ export default function ClassNode({ id, data }: { id: string; data: ClassNodeDef
           ))}
 
           {/* Output Handles */}
-          {data.outputPorts.map((port, i) => (
+          {outputPorts.map((port, i) => (
             <Tooltip key={`out-${port}`}>
               <TooltipTrigger asChild>
                 <Handle
                   id={`${port}`}
                   type="source"
                   position={Position.Right}
-                  className="absolute bg-green-400! hover:bg-green-600! w-2.5! h-2.5! transition-all duration-150 cursor-pointer hover:ring-2 hover:ring-green-300!"
+                  className="absolute bg-green-400! hover:bg-green-600! w-2.5 h-2.5 transition-all duration-150 cursor-pointer hover:ring-2 hover:ring-green-300!"
                   style={{
-                    top: `${(i + 0.5) * (100 / totalRows)}%`,
+                    top: `${((i + 0.5) * 100) / totalRows}%`,
                     transform: "translateY(-50%)",
                   }}
                 />
@@ -99,14 +100,14 @@ export default function ClassNode({ id, data }: { id: string; data: ClassNodeDef
           ))}
         </div>
 
-        {/* Toolbar */}
+        {/* Toolbar (unchanged) */}
         {showToolbar && (
           <NodeToolbar isVisible position={Position.Bottom}>
             <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-2 min-w-[130px]">
               <div className="text-[11px] font-medium text-gray-500 px-1 pb-1 border-b mb-1">
                 Available Methods
               </div>
-              {data.methods.map((m) => (
+              {methods.map((m) => (
                 <button
                   key={m.name}
                   onClick={() => addMethodNode(m)}

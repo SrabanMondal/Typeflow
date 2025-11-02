@@ -1,9 +1,11 @@
+
+import { SerializedWorkflow } from "@/types/workflow";
 import React, { useRef } from "react";
 
 interface FileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onImport: (json: any) => void;
+  onImport: (json: SerializedWorkflow) => void;
 }
 
 export default function FileModal({ isOpen, onClose, onImport }: FileModalProps) {

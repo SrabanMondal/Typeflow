@@ -1,10 +1,15 @@
 // src/hooks/useNodeCatalog.ts
 "use client";
 
-import { NodeCatalog } from "@/types/node";
+import { ClassNodeDef, FunctionNodeDef, NodeCatalog } from "@/types/node";
 import { useEffect, useState } from "react";
-//import api from "@/lib/api";
+import api from "@/lib/api";
+import axios from "axios";
 
+export type NodesApiRes={
+  nodes: FunctionNodeDef[],
+  classes: ClassNodeDef[],
+}
 
 export function useNodeCatalog() {
   const [catalog, setCatalog] = useState<NodeCatalog>({
@@ -16,70 +21,54 @@ export function useNodeCatalog() {
 
   useEffect(() => {
     async function fetchData() {
-      // --- Uncomment this when backend is ready ---
-      // const { data, error } = await get<NodeCatalog>("/api/nodes");
-      // if (data) setCatalog(data);
-
-      // --- Dummy fallback data for now ---
-      const dummy: NodeCatalog = {
-        inputs: [
-          {
-            entity: "X",
-            name: "value",
-            description: "Provide a string constant",
-            valueType: "string",
+      try {
+        const res = await api.get<NodesApiRes>("/nodes");
+        const data = res.data;
+        console.log(res.data)
+        
+        const dummy: NodeCatalog = {
+          inputs: [
+            {
+              entity: "X",
+              name: "string_val",
+              description: "Provide a string constant",
+              valueType: "str",
+              outputPorts: ["val"],
+              value:""
+            },
+            {
+              entity: "X",
+              name: "num",
+              description: "Provide a numeric constant",
+              valueType: "int",
             outputPorts: ["val"],
             value:""
           },
           {
-            entity: "X",
-            name: "num",
-            description: "Provide a numeric constant",
-            valueType: "integer",
+              entity: "X",
+              name: "bool_val",
+              description: "Provide a boolean constant",
+              valueType: "bool",
             outputPorts: ["val"],
             value:""
           },
         ],
-        functions: [
-          {
-            entity: "F",
-            name: "console",
-            description: "Print message to console",
-            inputPorts: ["message"],
-            outputPorts: [],
-          },
-          {
-            entity: "F",
-            name: "uppercase",
-            description: "Convert string to uppercase",
-            inputPorts: ["text","a","b","c","d","e","f","g","h","i"],
-            outputPorts: ["returns","a","b","c","d","e","f","g","h","i"],
-          },
-        ],
-        classes: [
-          {
-            entity: "C",
-            name: "TextCleaner",
-            description: "Clean and normalize text",
-            inputPorts: ["raw_text","self"],
-            outputPorts: ["self","raw_text","a","b","c","d","e","f","g","h","i"],
-            methods: [
-              {
-                entity:"C",
-                name: "clean",
-                inputPorts: ["self", "raw_text","a","b","c","d","e","f","g","h","i"],
-                outputPorts: ["returns"],
-                description: "Normalize whitespace in text",
-              },
-            ],
-          },
-        ],
+        functions: data.nodes,
+        classes: data.classes,
       };
-
+      
       setCatalog(dummy);
       setLoading(false);
+      console.log(dummy);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(err.response?.status);
+        console.log(err.response?.data);
+        setLoading(false);
+      }
     }
-
+    }
+    
     fetchData();
   }, []);
 

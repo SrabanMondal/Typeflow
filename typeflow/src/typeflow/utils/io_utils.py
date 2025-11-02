@@ -1,9 +1,12 @@
-from pprint import pformat
 import json
-from pathlib import Path
 import os
-import yaml
+from ast import literal_eval
+from pathlib import Path
+from pprint import pformat
+from typing import Any
+
 import typer
+import yaml
 
 
 def ensure_structure():
@@ -61,36 +64,88 @@ def load_compiled_graphs():
     return adj_list, rev_adj_list
 
 
-def format_yaml_val(data: dict) -> str:
+def format_yaml_val(data: dict) -> Any:
     """
-    Takes a YAML-loaded dict and returns a formatted Python assignment string.
-    
-    Example:
-        {'val': 'Hello'}  ->  "data = 'Hello'"
-        {'val': [1, 2, 3]}  ->  "data = [1, 2, 3]"
+    Takes a dict containing 'val' and 'valueType',
+    and returns a properly typed Python value.
+
+    Supports:
+      - str, int, float, bool, list, dict, set, number (float alias)
+
+    Examples:
+      {"val": "true", "valueType": "bool"}  -> True
+      {"val": "123", "valueType": "int"}    -> 123
+      {"val": "[1,2]", "valueType": "list"} -> [1, 2]
+      {"val": "hello", "valueType": "str"}  -> "hello"
     """
+
     if not isinstance(data, dict):
-        raise TypeError("Expected a dictionary (YAML-loaded data).")
-
+        raise TypeError("Expected a dict input.")
     if "val" not in data:
-        raise KeyError("'val' key not found in the input data.")
+        raise KeyError("'val' missing in input.")
+    if "output" not in data:
+        raise KeyError("'valueType' missing in input.")
 
-    formatted = f"{pformat(data['val'])}"
-    return formatted
+    raw_val = data["val"]
+    vtype = data["output"].lower().strip()
+
+    if isinstance(raw_val, str):
+        raw_val = raw_val.strip()
+
+    try:
+        if vtype in ("str", "string"):
+            formatted = f"{pformat(data['val'])}"
+            return formatted
+
+        elif vtype in ("int", "integer"):
+            return int(raw_val)
+
+        elif vtype in ("float", "number"):
+            return float(raw_val)
+
+        elif vtype == "bool":
+            if isinstance(raw_val, bool):
+                return raw_val
+            val_lower = str(raw_val).lower()
+            if val_lower in ("true", "1", "yes", "on"):
+                return True
+            elif val_lower in ("false", "0", "no", "off"):
+                return False
+            else:
+                raise ValueError(f"Invalid boolean value: {raw_val}")
+
+        elif vtype in ("list", "set", "dict"):
+            # try parsing JSON or Python literal
+            try:
+                parsed = json.loads(raw_val) if isinstance(raw_val, str) else raw_val
+            except Exception:
+                parsed = literal_eval(raw_val)
+
+            if vtype == "set":
+                return set(parsed)
+            return parsed
+
+        else:
+            # fallback — keep as string
+            return raw_val
+
+    except Exception as e:
+        raise ValueError(f"Failed to format value '{raw_val}' as '{vtype}': {e}")
+
 
 def load_const():
     """Load YAML definitions from nodes and classes dirs."""
     CONST_DIR = ".typeflow/consts"
-    const_data={}
+    const_data = {}
     print(CONST_DIR)
 
     for fname in os.listdir(CONST_DIR):
-            print(fname)
-            if fname.endswith(".yaml"):
-                path = os.path.join(CONST_DIR, fname)
-                with open(path) as f:
-                    data = yaml.safe_load(f)
-                    if not data:
-                        continue
-                    const_data[data["name"]] = data
+        print(fname)
+        if fname.endswith(".yaml"):
+            path = os.path.join(CONST_DIR, fname)
+            with open(path) as f:
+                data = yaml.safe_load(f)
+                if not data:
+                    continue
+                const_data[data["name"]] = data
     return const_data

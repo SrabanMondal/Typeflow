@@ -1,5 +1,6 @@
-from pathlib import Path
 import subprocess
+from pathlib import Path
+
 import typer
 
 from ..template import gitignore, workflow_yaml
@@ -65,6 +66,5 @@ def setup(app_name: str):
         typer.echo("⚠️  'uv' not found! Please install it with `pip install uv`.")
     except subprocess.CalledProcessError as e:
         typer.echo(f"❌ uv init failed: {e}")
-
 
     typer.echo(f"Workflow project '{app_name}' created successfully!")

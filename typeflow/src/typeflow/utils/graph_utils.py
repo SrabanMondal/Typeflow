@@ -66,7 +66,6 @@ def load_yaml_definitions():
                     else:
                         const_yaml[data["name"]] = data
 
-                        
 
 def lookup_port_type(port_str):
     """Get data type for a given port string."""
@@ -83,7 +82,7 @@ def lookup_port_type(port_str):
             method_id, port = parts[1], parts[2]
             method_name = method_id.split("@")[0]
             method_meta = meta["methods"][method_name]
-            
+
             if port == "returns":
                 return method_meta["returns"]
             else:

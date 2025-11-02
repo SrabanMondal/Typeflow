@@ -1,7 +1,8 @@
 import ast
-from pathlib import Path
-import sys
 import subprocess
+import sys
+from pathlib import Path
+
 import typer
 import yaml
 
@@ -58,12 +59,12 @@ def validate_node(node_name: str):
         typer.echo("Error: Cannot detect .typeflow folder. Run from project root.")
         raise typer.Exit(code=1)
 
-    node_file = cwd/ "src" / "nodes" / node_name / "main.py"
+    node_file = cwd / "src" / "nodes" / node_name / "main.py"
     if not node_file.exists():
         typer.echo(f"Error: Node '{node_name}' does not exist.")
         raise typer.Exit(code=1)
     module_path = f"src.nodes.{node_name}.main"
-    
+
     try:
         subprocess.run(
             [sys.executable, "-m", module_path],
@@ -96,7 +97,7 @@ def validate_class(class_name: str):
         raise typer.Exit(code=1)
 
     module_path = f"src.classes.{class_name}"
-    
+
     try:
         subprocess.run(
             [sys.executable, "-m", module_path],

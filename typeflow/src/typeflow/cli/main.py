@@ -8,7 +8,9 @@ from .commands import (
     create_class,
     create_node,
     generate,
+    run,
     setup,
+    start_ui,
     validate,
 )
 
@@ -37,6 +39,8 @@ app.command()(create_node.create_node)
 app.command()(add.add)
 app.command()(compile_graph.compile)
 app.command()(generate.generate)
+app.command()(start_ui.start_ui)
+app.command()(run.run)
 app.add_typer(validate.app, name="validate")
 
 if __name__ == "__main__":
