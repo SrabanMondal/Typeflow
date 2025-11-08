@@ -27,7 +27,7 @@ def node():
                 " Please provide type hints."
             )
 
-        for field, field_type in type_hints.items():
+        for _, field_type in type_hints.items():
             validate_type(field_type)
 
         metadata = {
@@ -66,7 +66,7 @@ def node():
                 yaml.dump(
                     metadata, yaml_file, default_flow_style=False, sort_keys=False
                 )
-            print(f"Node manifest saved to: {yaml_file_path}")
+            # print(f"Node manifest saved to: {yaml_file_path}")
         except PermissionError:
             raise PermissionError(
                 f"Cannot write to '{yaml_file_path}'. Please check permissions."

@@ -1,29 +1,12 @@
 import subprocess
 from pathlib import Path
-
 import typer
-
+import sys
 from ..template import gitignore, workflow_yaml
-
 
 def setup(app_name: str):
     """
     Create a new workflow project with the given app name.
-    Structure:
-    app_name/
-        src/
-            __init__.py
-            nodes/
-                __init__.py
-            classes/
-                __init__.py
-        .typeflow/
-            nodes/
-            classes/
-        workflow/
-            workflow.yaml
-        .gitignore
-        README.md
     """
     root = Path(app_name)
 
@@ -54,6 +37,8 @@ def setup(app_name: str):
     (root / "workflow" / "workflow.yaml").write_text(
         workflow_yaml.content.format(workflow_name=app_name)
     )
+
+    # Initialize uv project
     typer.echo("Initializing uv project...")
     try:
         subprocess.run(
@@ -64,7 +49,30 @@ def setup(app_name: str):
         typer.echo("✅ uv project initialized successfully!")
     except FileNotFoundError:
         typer.echo("⚠️  'uv' not found! Please install it with `pip install uv`.")
+        raise typer.Exit(code=1)
     except subprocess.CalledProcessError as e:
         typer.echo(f"❌ uv init failed: {e}")
+        raise typer.Exit(code=1)
 
-    typer.echo(f"Workflow project '{app_name}' created successfully!")
+    # Install typeflow inside project venv
+    typer.echo("Installing typeflow inside project .venv...")
+    # try:
+    #     subprocess.run(
+    #         ["uv", "add", "..\\typeflow\\dist\\typeflow-0.1.0-py3-none-any.whl"],
+    #         cwd=root,
+    #         check=True,
+    #     )
+    #     typer.echo("✅ typeflow installed in project .venv!")
+    # except subprocess.CalledProcessError as e:
+    #     typer.echo(f"❌ Failed to install typeflow in project .venv: {e}")
+
+    # Instruction for user
+    typer.echo("\n⚡ Project setup complete!")
+    typer.echo(f"👉 To activate the project environment, run:")
+    if sys.platform.startswith("win"):
+        typer.echo(f"    .\\{app_name}\\.venv\\Scripts\\Activate.ps1  # PowerShell")
+    else:
+        typer.echo(f"    source ./{app_name}/.venv/bin/activate  # Linux/macOS")
+    typer.echo("After activation, you can run `typeflow` commands inside this environment.")
+
+    typer.echo(f"\nWorkflow project '{app_name}' created successfully!")

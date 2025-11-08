@@ -4,7 +4,29 @@ import { SerializedWorkflow } from "@/types/workflow";
 import { Edge } from "@xyflow/react";
 
 
-
+export function serializeWorkflow(
+  nodes: WorkflowNode[],
+  edges: Edge[],
+  name = "Untitled Workflow"
+): SerializedWorkflow {
+  return {
+    id: `workflow-${Date.now()}`,
+    name,
+    version: "1.0",
+    nodes: nodes.map((n) => ({
+      id: n.id,
+      type: n.type??"unknown",
+      position: n.position,
+      data: n.data,
+    })),
+    connections: edges.map((e) => ({
+      source: e.source,
+      sourceHandle: e.sourceHandle??"",
+      target: e.target,
+      targetHandle: e.targetHandle??"",
+    })),
+  };
+}
 
 export function deserializeWorkflow(payload: SerializedWorkflow): {
   nodes: WorkflowNode[];

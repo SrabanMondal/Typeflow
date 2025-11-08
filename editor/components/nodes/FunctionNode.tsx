@@ -11,11 +11,11 @@ import {
 interface FunctionNodeProps {
   id: string;
   data: FunctionNodeDef;
+  style?: React.CSSProperties;
 }
 
-export default function FunctionNode({ id, data }: FunctionNodeProps) {
+export default function FunctionNode({ id, data, style}: FunctionNodeProps) {
   const { name, description, inputPorts = [], outputPorts = [] } = data;
-
   // total rows = max(inputs, outputs)
   const totalRows = Math.max(inputPorts.length, outputPorts.length);
 
@@ -23,6 +23,7 @@ export default function FunctionNode({ id, data }: FunctionNodeProps) {
     <TooltipProvider delayDuration={150}>
       <div
         key={id}
+        style={style}
         className="relative rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-all w-56"
       >
         {/* Header */}

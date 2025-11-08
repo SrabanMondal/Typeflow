@@ -28,15 +28,28 @@ export interface FunctionNodeDef extends Record<string, unknown> {
 export interface InputNodeDef extends Record<string, unknown> {
   entity: "X";
   name: string;
-  valueType: "str" | "number" | "int" | "float" | "bool" | "list" | "dict" | "set";
+  valueType: "str" | "number" | "int" | "float" | "bool" | "list" | "dict" | "set" | "tuple";
   description: string;
   outputPorts: string[];
   value: string;
+  file?: boolean;
 }
 
-export type CatalogueType =  ClassNodeDef|FunctionNodeDef|InputNodeDef
+export interface OutputNodeDef extends Record<string, unknown> {
+  entity: "O";
+  name: string;
+  description: string;
+  inputPorts: string[];
+  outputType: "text" | "json" | "image" | "table";
+  value: string;
+}
+
+
+
+export type CatalogueType =  ClassNodeDef|FunctionNodeDef|InputNodeDef|OutputNodeDef;
 export interface NodeCatalog extends Record<string, unknown> {
   classes: ClassNodeDef[];
   functions: FunctionNodeDef[];
   inputs: InputNodeDef[];
+  outputs: OutputNodeDef[];
 }

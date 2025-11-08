@@ -1,5 +1,18 @@
 # 🌀 TypeFlow
 
+# tasks
+## backend
+- type fix for input/output nodes
+- event check on sse event jsons print
+## frontend
+- ui for events
+- input file/img upload - passing path string
+- X to I type symbol for input
+- output img receive check
+## next
+- dependency management
+- async
+
 **Composable, Type-Safe, Reproducible Python Workflows.**
 
 TypeFlow is a modular low-code framework for building, managing, and executing Python workflows through a visual editor and CLI.  

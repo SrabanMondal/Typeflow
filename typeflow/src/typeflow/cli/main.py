@@ -12,6 +12,7 @@ from .commands import (
     setup,
     start_ui,
     validate,
+    install,
 )
 
 app = typer.Typer(
@@ -27,10 +28,10 @@ def main():
     pass
 
 
-@app.command()
-def hello(name: str) -> None:
-    """Simple CLI command to greet someone."""
-    typer.echo(greet(name))
+# @app.command()
+# def hello(name: str) -> None:
+#     """Simple CLI command to greet someone."""
+#     typer.echo(greet(name))
 
 
 app.command()(setup.setup)
@@ -41,6 +42,7 @@ app.command()(compile_graph.compile)
 app.command()(generate.generate)
 app.command()(start_ui.start_ui)
 app.command()(run.run)
+app.command()(install.install)
 app.add_typer(validate.app, name="validate")
 
 if __name__ == "__main__":

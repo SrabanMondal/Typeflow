@@ -5,6 +5,8 @@ import { ClassNodeDef, FunctionNodeDef, NodeCatalog } from "@/types/node";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import axios from "axios";
+import { InputNodes } from "@/lib/inputs";
+import { OutputNodes } from "@/lib/outputs";
 
 export type NodesApiRes={
   nodes: FunctionNodeDef[],
@@ -16,6 +18,7 @@ export function useNodeCatalog() {
     classes: [],
     functions: [],
     inputs: [],
+    outputs:[],
   });
   const [loading, setLoading] = useState(true);
 
@@ -27,34 +30,10 @@ export function useNodeCatalog() {
         console.log(res.data)
         
         const dummy: NodeCatalog = {
-          inputs: [
-            {
-              entity: "X",
-              name: "string_val",
-              description: "Provide a string constant",
-              valueType: "str",
-              outputPorts: ["val"],
-              value:""
-            },
-            {
-              entity: "X",
-              name: "num",
-              description: "Provide a numeric constant",
-              valueType: "int",
-            outputPorts: ["val"],
-            value:""
-          },
-          {
-              entity: "X",
-              name: "bool_val",
-              description: "Provide a boolean constant",
-              valueType: "bool",
-            outputPorts: ["val"],
-            value:""
-          },
-        ],
+          inputs: InputNodes,
         functions: data.nodes,
         classes: data.classes,
+        outputs: OutputNodes,
       };
       
       setCatalog(dummy);

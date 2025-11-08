@@ -1,25 +1,41 @@
 import api from "./api";
-import { SerializedWorkflow } from "./serializer";
+import { SerializedWorkflow } from "@/types/workflow";
+import { toast } from "react-hot-toast";
 
-
-
-export async function getDag(): Promise<SerializedWorkflow|null>{
+export async function getDag(): Promise<SerializedWorkflow | null> {
   try {
-    const { data } =  await api.get<SerializedWorkflow>("/dag");
+    const { data } = await api.get<SerializedWorkflow>("/dag");
+    toast.success("Workflow loaded successfully ✅");
     return data;
-    
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    toast.error(
+      "Workflow json not found in ur local dir"
+    );
     return null;
   }
 }
 
-export async function saveWorkflow(workflow: SerializedWorkflow): Promise<{ status: string }> {
+export async function saveWorkflow(
+  workflow: SerializedWorkflow
+): Promise<{ status: string }> {
   try {
-    const { data } =  await api.post<{ status: string }>("/save", workflow);
+    const { data } = await api.post<{ status: string }>("/save", workflow);
+    toast.success("Workflow saved successfully 💾");
     return data;
-    
   } catch (error) {
-     return {status: String(error)}
+    console.error(error);
+    toast.error("Failed to save workflow");
+    return { status: "error" };
   }
+}
+
+export async function startWorkflow(workflow:SerializedWorkflow) {
+    try {
+      const res = await api.post("/start", workflow );
+      return res.data
+    } catch (error) {
+       console.error(error)
+       return null;
+    }
 }

@@ -1,7 +1,11 @@
+import json, base64
+from io import BytesIO
+import pandas as pd
 from collections import deque
 from pathlib import Path
-
-from typeflow.utils import format_yaml_val, load_const
+from PIL import Image
+import numpy as np
+from typeflow.utils import format_input_val, load_const, get_io_node, load_io_data
 
 # -------------------------------
 # Graph utilities
@@ -40,6 +44,65 @@ def topo_kahn(adj_list):
 # -------------------------------
 # Helpers for code generation
 # -------------------------------
+
+
+
+send_output_def = '''
+import uuid, os, json
+from pathlib import Path
+from PIL import Image
+from io import BytesIO
+import numpy as np
+
+OUTPUT_DIR = Path("data/outputs")
+OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
+def send_output(value, type_, node):
+    if type_ == "text":
+        print(json.dumps({"event": "node_output", "outputType": type_, "id" : node, "val": str(value)}))
+    elif type_ == "json":
+        try:
+            json.dumps(value)
+            print(json.dumps({"event": "node_output", "outputType": type_, "id": node, "val": value}))
+        except Exception:
+            print(json.dumps({"event": "node_output", "outputType": type_, "id": node, "val": str(value)}))
+    elif type_ == "table":
+        if isinstance(value, pd.DataFrame):
+            data = value.to_dict(orient="records")
+        elif isinstance(value, list) and all(isinstance(x, dict) for x in value):
+            data = value
+        else:
+            data = [{"value": v} for v in value]
+        print(json.dumps({"event": "node_output", "outputType": "table", "id": node, "val": data}))
+    elif type_ == "image":
+        buf = BytesIO()
+        if isinstance(value, np.ndarray):
+            img = Image.fromarray(value)
+            img.save(buf, format="PNG")
+        elif isinstance(value, Image.Image):
+            value.save(buf, format="PNG")
+        else:
+            print(json.dumps({
+                "event": "node_error",
+                "id": node,
+                "msg": "Unsupported image type"
+            }))
+            return
+
+        img_id = f"{uuid.uuid4().hex}.png"
+        img_path = OUTPUT_DIR / img_id
+        with open(img_path, "wb") as f:
+            f.write(buf.getvalue())
+
+        # Send only relative path or accessible URL
+        print(json.dumps({
+            "event": "node_output",
+            "outputType": "image",
+            "id": node,
+            "val": f"/outputs/{img_id}"
+        }))
+        return
+'''
+
 
 
 def instance_name_from_cls_key(cls_key):
@@ -95,16 +158,20 @@ def generate_imports(adj_list):
 # -------------------------------
 
 
-def generate_script(adj_list, rev_adj_list):
+def generate_script(adj_list, rev_adj_list, live=False, ports=None):
     """
     Generate Python code lines for orchestrator based on adjacency lists.
     """
-    ports = load_const()
-    print(ports)
+    if not ports:
+        ports = load_io_data()
+    # print("ports: ",ports)
     topo_order = topo_kahn(adj_list)
     import_lines = generate_imports(adj_list)
     lines = ["# Auto-generated workflow script\n"]
     lines.extend(import_lines)
+    lines.append("\n")
+    if live:
+        lines.append(send_output_def)
     lines.append("\n")
 
     def get_parents(node):
@@ -118,9 +185,9 @@ def generate_script(adj_list, rev_adj_list):
             name_id = node.split(":")[1]
             name, vid = name_id.split("@")
             val = None
-            node_data = ports.get(name_id, None)
+            node_data = get_io_node(node, ports)
             if node_data:
-                val = format_yaml_val(node_data)
+                val = format_input_val(node_data)
             lines.append(f"{name}_{vid} = {val}")
             continue
 
@@ -145,7 +212,8 @@ def generate_script(adj_list, rev_adj_list):
                     if th != "self"
                 ]
                 arg_str = ", ".join(args)
-
+                if live:
+                    lines.append(f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))')
                 if self_edge:
                     src_node, src_handle, _ = self_edge
                     src_expr = port_to_expr(src_node, src_handle)
@@ -155,6 +223,8 @@ def generate_script(adj_list, rev_adj_list):
                         lines.append(f"{inst_var} = {src_expr}.{cls_name.lower()}")
                 else:
                     lines.append(f"{inst_var} = {cls_name}({arg_str})")
+                if live:
+                    lines.append(f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))')
                 continue
 
             # ---- Subnode (method) ----
@@ -171,7 +241,11 @@ def generate_script(adj_list, rev_adj_list):
                     if not (th == "self" and s.startswith(f"C:{cls_key}"))
                 ]
                 arg_str = ", ".join(args)
+                if live:
+                    lines.append(f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))')
                 lines.append(f"{out_var} = {inst_var}.{method}({arg_str})")
+                if live:
+                    lines.append(f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))')
                 continue
 
         # ----- Functions -----
@@ -182,7 +256,8 @@ def generate_script(adj_list, rev_adj_list):
             args = [f"{th}={port_to_expr(s, sh)}" for s, sh, th in parents]
             arg_str = ", ".join(args)
 
-            # assign only if has consumers
+            if live:
+                lines.append(f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))')
             consumers_exist = any(
                 node in [dst for dst, _, _ in edges] for edges in adj_list.values()
             )
@@ -190,8 +265,27 @@ def generate_script(adj_list, rev_adj_list):
                 lines.append(f"{func_name}_out = {func_name}({arg_str})")
             else:
                 lines.append(f"{func_name}({arg_str})")
+            if live:
+                lines.append(f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))')
             continue
+        
+        if node_type == "O":
+            parts = node.split(":")
+            out_key = parts[1]  # text_out@3
+            out_type = out_key.split("_")[0]  # "text", "json", "table", "image"
+            parents = get_parents(node)
+            if len(parents) != 1:
+                raise ValueError(f"Output node {node} must have exactly one parent")
+            src_node, src_handle, _ = parents[0]
+            expr = port_to_expr(src_node, src_handle)
 
+            if live:
+                lines.append(f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))')
+                lines.append(f"send_output({expr}, '{out_type}', '{node}')")
+                lines.append(f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))')
+            continue
+    if live:
+        lines.append("\nprint(json.dumps({'event': 'workflow_complete', 'data': None}))")
     lines.append("\n# End of generated workflow\n")
     return "\n".join(lines)
 

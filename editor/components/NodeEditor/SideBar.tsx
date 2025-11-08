@@ -6,8 +6,8 @@ import { Box, Cpu, Database } from "lucide-react";
 
 
 export default function Sidebar() {
-  const { inputs, functions, classes, loading } = useNodeCatalog();
-  const [activeTab, setActiveTab] = useState<"inputs" | "functions" | "classes">("inputs");
+  const { inputs, functions, classes, outputs, loading } = useNodeCatalog();
+  const [activeTab, setActiveTab] = useState<"inputs" | "functions" | "classes" | "outputs">("inputs");
 
   const onDragStart = (event: React.DragEvent, nodeData: any) => {
     event.dataTransfer.setData("application/reactflow", JSON.stringify(nodeData));
@@ -33,6 +33,7 @@ setTimeout(() => preview.remove(), 0);
     { id: "inputs", label: "Inputs", icon: <Database /> },
     { id: "functions", label: "Functions", icon: <Cpu /> },
     { id: "classes", label: "Classes", icon: <Box /> },
+    { id: "outputs", label: "Outputs", icon: <Box /> },
   ];
 
   const getTabData = () => {
@@ -44,6 +45,8 @@ setTimeout(() => preview.remove(), 0);
       case "classes":
         return classes;
       default:
+        case "outputs":
+          return outputs;
         return [];
     }
   };
@@ -57,7 +60,7 @@ setTimeout(() => preview.remove(), 0);
   }
 
   return (
-    <div className="sidebar w-80 h-full bg-slate-900/80 backdrop-blur-md border-r border-slate-800 text-white flex flex-col">
+    <div className="sidebar w-96 h-full bg-slate-900/80 backdrop-blur-md border-r border-slate-800 text-white flex flex-col">
       {/* Tabs Header */}
       <div className="flex justify-between border-b border-slate-800">
         {tabs.map((tab) => (

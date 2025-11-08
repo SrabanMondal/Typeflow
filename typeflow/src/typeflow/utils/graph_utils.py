@@ -1,7 +1,7 @@
 import os
 
 import yaml
-
+from .io_utils import load_io_data, get_node_value_type
 
 # ------------------------------
 # Adjacency list creator
@@ -41,14 +41,14 @@ def create_adjacency_lists(workflow_json):
 # ------------------------------
 NODES_DIR = ".typeflow/nodes"
 CLASS_DIR = ".typeflow/classes"
-CONST_DIR = ".typeflow/consts"
 
-class_yaml, func_yaml, const_yaml = {}, {}, {}
+
+class_yaml, func_yaml = {}, {}
 
 
 def load_yaml_definitions():
     """Load YAML definitions from nodes and classes dirs."""
-    for directory in [NODES_DIR, CLASS_DIR, CONST_DIR]:
+    for directory in [NODES_DIR, CLASS_DIR]:
         if not os.path.exists(directory):
             continue
 
@@ -63,11 +63,11 @@ def load_yaml_definitions():
                         class_yaml[data["name"]] = data
                     elif data.get("entity") == "function":
                         func_yaml[data["name"]] = data
-                    else:
-                        const_yaml[data["name"]] = data
+                    # else:
+                    #     const_yaml[data["name"]] = data
 
 
-def lookup_port_type(port_str):
+def lookup_port_type(port_str, io_nodes, node_id):
     """Get data type for a given port string."""
     node_type, rest = port_str.split(":", 1)
     if node_type == "C":
@@ -100,27 +100,30 @@ def lookup_port_type(port_str):
         else:
             return meta["inputs"][port]
 
-    elif node_type == "X":
-        const_name = rest.split(":")[0]
-        return const_yaml[const_name]["output"]
+    elif node_type == "X" or node_type=="O":
+        return get_node_value_type(node_id, io_nodes)
 
     else:
         raise ValueError(f"Unknown node prefix: {node_type}")
 
 
-def validate_edge(src, src_port, tgt_node, tgt_port):
+def validate_edge(src, src_port, tgt_node, tgt_port, io_nodes):
     """Validate a single edge for type matching."""
     src_port_str = f"{src}:{src_port}"
     tgt_port_str = f"{tgt_node}:{tgt_port}"
 
     try:
-        src_type = lookup_port_type(src_port_str)
-        tgt_type = lookup_port_type(tgt_port_str)
+        src_type = lookup_port_type(src_port_str, io_nodes, src)
+        tgt_type = lookup_port_type(tgt_port_str, io_nodes, tgt_node)
     except Exception as e:
         print(f"❌ Lookup failed for edge {src_port_str} → {tgt_port_str}: {e}")
         return False
 
     if src_type != tgt_type:
+        tgt_node_type = tgt_node.split(":")[0]
+        if tgt_node_type=="O":
+            print("Output node skipped type validation")
+            return True
         print(
             f"⚠️ Type mismatch: {src_port_str} ({src_type}) → {tgt_port_str} ({tgt_type})"
         )
@@ -133,12 +136,12 @@ def validate_edge(src, src_port, tgt_node, tgt_port):
 def validate_graph(adj_list):
     """Validate all edges in the adjacency list."""
     load_yaml_definitions()
-
+    io_nodes = load_io_data()
     all_valid = True
 
     for src, edges in adj_list.items():
         for tgt_node, src_port, tgt_port in edges:
-            if not validate_edge(src, src_port, tgt_node, tgt_port):
+            if not validate_edge(src, src_port, tgt_node, tgt_port, io_nodes):
                 all_valid = False
 
     return all_valid

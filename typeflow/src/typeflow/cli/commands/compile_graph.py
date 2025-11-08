@@ -7,6 +7,8 @@ from typeflow.utils import (
     ensure_structure,
     save_compiled,
     validate_graph,
+    extract_io_nodes,
+    save_io_nodes
 )
 
 
@@ -19,7 +21,8 @@ def compile():
 
     typer.echo("🧩 Creating adjacency lists...")
     adj_list, rev_adj_list = create_adjacency_lists(workflow_json)
-
+    io_nodes = extract_io_nodes(workflow_json)
+    save_io_nodes(io_nodes)
     save_compiled(adj_list, rev_adj_list)
 
     typer.echo("🔍 Validating graph edges...")

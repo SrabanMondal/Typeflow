@@ -8,6 +8,7 @@ from typing import Any
 import typer
 import yaml
 
+IO_FILE = Path(".typeflow/compiled/io.json")
 
 def ensure_structure():
     """Ensure required folders/files exist."""
@@ -64,37 +65,23 @@ def load_compiled_graphs():
     return adj_list, rev_adj_list
 
 
-def format_yaml_val(data: dict) -> Any:
-    """
-    Takes a dict containing 'val' and 'valueType',
-    and returns a properly typed Python value.
-
-    Supports:
-      - str, int, float, bool, list, dict, set, number (float alias)
-
-    Examples:
-      {"val": "true", "valueType": "bool"}  -> True
-      {"val": "123", "valueType": "int"}    -> 123
-      {"val": "[1,2]", "valueType": "list"} -> [1, 2]
-      {"val": "hello", "valueType": "str"}  -> "hello"
-    """
-
+def format_input_val(data: dict) -> Any:
     if not isinstance(data, dict):
         raise TypeError("Expected a dict input.")
-    if "val" not in data:
+    if "value" not in data:
         raise KeyError("'val' missing in input.")
-    if "output" not in data:
+    if "valueType" not in data:
         raise KeyError("'valueType' missing in input.")
 
-    raw_val = data["val"]
-    vtype = data["output"].lower().strip()
+    raw_val = data["value"]
+    vtype = data["valueType"].lower().strip()
 
     if isinstance(raw_val, str):
         raw_val = raw_val.strip()
 
     try:
         if vtype in ("str", "string"):
-            formatted = f"{pformat(data['val'])}"
+            formatted = f"{pformat(raw_val)}"
             return formatted
 
         elif vtype in ("int", "integer"):
@@ -114,7 +101,7 @@ def format_yaml_val(data: dict) -> Any:
             else:
                 raise ValueError(f"Invalid boolean value: {raw_val}")
 
-        elif vtype in ("list", "set", "dict"):
+        elif vtype in ("list", "set", "dict", "tuple"):
             # try parsing JSON or Python literal
             try:
                 parsed = json.loads(raw_val) if isinstance(raw_val, str) else raw_val
@@ -123,24 +110,27 @@ def format_yaml_val(data: dict) -> Any:
 
             if vtype == "set":
                 return set(parsed)
+            elif vtype == "tuple":
+                return tuple(parsed)
             return parsed
 
         else:
-            # fallback — keep as string
             return raw_val
 
     except Exception as e:
         raise ValueError(f"Failed to format value '{raw_val}' as '{vtype}': {e}")
 
-
+#-------------------------------
 def load_const():
     """Load YAML definitions from nodes and classes dirs."""
     CONST_DIR = ".typeflow/consts"
     const_data = {}
-    print(CONST_DIR)
+    # print(CONST_DIR)
 
     for fname in os.listdir(CONST_DIR):
-        print(fname)
+        # path = os.path.join(CONST_DIR, fname)
+        # print(f"Reading: {path} | Last modified: {os.path.getmtime(path)}")
+        # print(fname)
         if fname.endswith(".yaml"):
             path = os.path.join(CONST_DIR, fname)
             with open(path) as f:
@@ -149,3 +139,55 @@ def load_const():
                     continue
                 const_data[data["name"]] = data
     return const_data
+# --------------------------------
+
+
+def extract_io_nodes(workflow_json: dict):
+    """
+    Extracts nodes of type X and O from a workflow JSON and returns them as a list.
+    """
+    io_nodes = [node for node in workflow_json.get("nodes", []) if node.get("type") in ("X", "O")]
+    return io_nodes
+
+def save_io_nodes(io_nodes: list, filename = IO_FILE):
+    """
+    Saves a list of I/O nodes to a JSON file.
+    """
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(io_nodes, f, indent=2, ensure_ascii=False)
+    
+    print(f"✅ Extracted {len(io_nodes)} I/O nodes and saved to {filename}")
+
+def load_io_data():
+    """Helper function to load io.json"""
+    if not IO_FILE.exists():
+        raise FileNotFoundError("io.json not found. Run extract_io_nodes() first.")
+    with open(IO_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def get_io_node(node_id: str, nodes:dict):
+    """
+    Returns the 'value' of a node with the given ID from io.json.
+    """
+    for node in nodes:
+        if node["id"] == node_id:
+            return node["data"]
+    raise KeyError(f"Node '{node_id}' not found in io.json.")
+
+
+def get_node_value_type(node_id: str, nodes:dict):
+    """
+    Returns the value type of a node (valueType for X nodes, outputType for O nodes).
+    """
+    for node in nodes:
+        if node["id"] == node_id:
+            node_type = node.get("type")
+            data = node.get("data", {})
+            if node_type == "X":
+                return data.get("valueType")
+            elif node_type == "O":
+                return data.get("outputType")
+            else:
+                raise ValueError(f"Node '{node_id}' is not an X or O type node.")
+    raise KeyError(f"Node '{node_id}' not found in io.json.")

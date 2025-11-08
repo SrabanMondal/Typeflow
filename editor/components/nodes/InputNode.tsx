@@ -3,6 +3,8 @@ import { Handle, Position } from "@xyflow/react";
 import { InputNodeDef } from "@/types/node";
 import { useState, useCallback } from "react";
 import { useUpdateXNode } from "@/hooks/useUpdateNode";
+import { uploadFileToBackend } from "@/lib/upload";
+import toast from "react-hot-toast";
 
 interface InputNodeProps {
   id: string;
@@ -26,6 +28,7 @@ export default function InputNode({ id, data }: InputNodeProps) {
           case "bool":
             return ["true", "false", "1", "0"].includes(val.toLowerCase());
           case "list":
+          case "tuple":
           case "set": {
             const parsed = JSON.parse(val);
             return Array.isArray(parsed);
@@ -71,6 +74,25 @@ export default function InputNode({ id, data }: InputNodeProps) {
 
       <div className="mb-1 text-xs text-gray-500">{data.valueType}</div>
 
+       {data?.file ? (
+      <input
+        type="file"
+       onChange={async (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+
+          try {
+            const filePath = await uploadFileToBackend(file, id);
+            setValue(filePath);
+            updateXNodeData(id, { value: filePath });
+          } catch (err) {
+            console.error(err);
+            toast.error("File upload failed");
+          }
+        }}
+        className="w-full text-sm"
+      />
+    ) : (
       <input
         type="text"
         value={value}
@@ -78,6 +100,7 @@ export default function InputNode({ id, data }: InputNodeProps) {
         className={`w-full border rounded px-1 text-sm focus:outline-none
           ${isValid ? "border-gray-300" : "border-red-300"}`}
       />
+    )}
 
       <Handle
         id={`val`}

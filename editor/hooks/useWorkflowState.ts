@@ -16,10 +16,11 @@ import type {
   FunctionNodeDef,
   InputNodeDef,
   MethodDef,
+  OutputNodeDef,
 } from "@/types/node";
-import { deserializeWorkflow, SerializedWorkflow, serializeWorkflow } from "@/lib/serializer";
-
-export type WorkflowNodeData = ClassNodeDef | FunctionNodeDef | InputNodeDef | MethodDef;
+import { deserializeWorkflow, serializeWorkflow } from "@/lib/serializer";
+import { SerializedWorkflow } from "@/types/workflow";
+export type WorkflowNodeData = ClassNodeDef | FunctionNodeDef | InputNodeDef | MethodDef | OutputNodeDef;
 
 
 export type WorkflowNode = Node<WorkflowNodeData, string>;

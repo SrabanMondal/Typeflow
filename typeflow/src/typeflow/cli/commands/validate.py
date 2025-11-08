@@ -52,13 +52,30 @@ def update_workflow_yaml(item_name: str, section: str):
 
 
 # ---------------- NODE SUBCOMMAND ----------------
+
 @app.command("node")
-def validate_node(node_name: str):
+def validate_node(node_name: str = typer.Argument(None)):
     cwd = Path.cwd()
     if not (cwd / ".typeflow").exists():
         typer.echo("Error: Cannot detect .typeflow folder. Run from project root.")
         raise typer.Exit(code=1)
+    
+    nodes_dir = cwd / "src" / "nodes"
+    
+    if node_name is None:
+        typer.echo("No node name provided — validating all nodes in src/nodes/...")
 
+        node_dirs = [d for d in nodes_dir.iterdir() if (d / "main.py").exists()]
+
+        if not node_dirs:
+            typer.echo("No valid nodes found in src/nodes/")
+            raise typer.Exit(code=1)
+
+        for node_dir in node_dirs:
+            node = node_dir.name
+            typer.echo(f"\n➡ Validating node: {node}")
+            validate_node(node)  # recursively validate each node
+        return
     node_file = cwd / "src" / "nodes" / node_name / "main.py"
     if not node_file.exists():
         typer.echo(f"Error: Node '{node_name}' does not exist.")
@@ -85,12 +102,27 @@ def validate_node(node_name: str):
 
 # ---------------- CLASS SUBCOMMAND ----------------
 @app.command("class")
-def validate_class(class_name: str):
+def validate_class(class_name: str = typer.Argument(None)):
     cwd = Path.cwd()
     if not (cwd / ".typeflow").exists():
         typer.echo("Error: Cannot detect .typeflow folder. Run from project root.")
         raise typer.Exit(code=1)
+    classes_dir = cwd / "src" / "classes"
+    
+    if class_name is None:
+        typer.echo("No class name provided — running validation for all classes...")
+        py_files = [f for f in classes_dir.glob("*.py") if f.name != "__init__.py"]
 
+        if not py_files:
+            typer.echo("No Python files found in src/classes/")
+            raise typer.Exit(code=1)
+
+        for file in py_files:
+            cls_name = file.stem
+            typer.echo(f"\n➡ Validating class: {cls_name}")
+            validate_class(cls_name)
+        return
+    
     class_file = cwd / "src" / "classes" / f"{class_name}.py"
     if not class_file.exists():
         typer.echo(f"Error: Class '{class_name}' does not exist.")

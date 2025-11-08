@@ -17,6 +17,21 @@ def node_class(cls):
     cls.__is_node_class__ = True
 
     type_hints = get_type_hints(cls)
+    defaults = {k: getattr(cls, k) for k in type_hints.keys() if hasattr(cls, k)}
+
+    if "__init__" in cls.__dict__:
+        delattr(cls, "__init__")
+
+    def __init__(self, **kwargs):
+        for field_name, field_type in type_hints.items():
+            if field_name in kwargs:
+                setattr(self, field_name, kwargs[field_name])
+            elif field_name in defaults:
+                setattr(self, field_name, defaults[field_name])
+            else:
+                raise TypeError(f"Missing required field: {field_name}")
+
+    setattr(cls, "__init__", __init__)
 
     for field_name, field_type in type_hints.items():
         validate_type(field_type)
@@ -30,6 +45,7 @@ def node_class(cls):
     }
 
     # Fields → ports
+        
     for field_name, field_type in type_hints.items():
         metadata["fields"][field_name] = simplify_type(field_type)
     metadata["fields"]["self"] = cls.__name__
@@ -37,15 +53,21 @@ def node_class(cls):
     # Methods → callable ports
     for name, method in inspect.getmembers(cls, predicate=inspect.isfunction):
         if name.startswith("__"):
-            continue  # skip dunder methods
+            continue
 
         sig = inspect.signature(method)
+        
+        for p in sig.parameters.values():
+            if p.name != "self":
+                validate_type(p.annotation)
+                
         params = {
             p.name: simplify_type(p.annotation)
             for p in sig.parameters.values()
             if p.name != "self"
         }
         params["self"] = cls.__name__
+        validate_type(sig.return_annotation)
         ret_type = simplify_type(sig.return_annotation)
 
         metadata["methods"][name] = {
@@ -69,7 +91,7 @@ def node_class(cls):
         with open(yaml_file_path, "w") as f:
             yaml.dump(metadata, f, sort_keys=False, default_flow_style=False)
 
-        print(f"Manifest for: {cls.__name__} -> {yaml_file_path}")
+        # print(f"Manifest for: {cls.__name__} -> {yaml_file_path}")
     except PermissionError:
         raise PermissionError(
             f"Cannot write to '{yaml_file_path}'. Please check permissions."
