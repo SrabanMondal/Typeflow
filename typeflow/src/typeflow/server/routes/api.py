@@ -16,7 +16,7 @@ from typeflow.utils import load_compiled_graphs
 import asyncio, uuid, sys, os, json
 import shutil, re
 
-UPLOAD_DIR = Path("data")
+UPLOAD_DIR = Path("data/inputs")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 router = APIRouter()
 
@@ -117,8 +117,8 @@ def get_dag():
 def save_workflow_api(data: dict):
     try:
         save_workflow(data)
-        saved_files = create_const_yamls(data)
-        return {"status": "saved", "const_files": saved_files}
+        # saved_files = create_const_yamls(data)
+        return {"status": "saved"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

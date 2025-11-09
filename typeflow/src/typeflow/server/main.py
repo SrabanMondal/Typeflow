@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from typeflow.server.routes import api
 from fastapi.staticfiles import StaticFiles
-import asyncio, subprocess, sys, os, json
+
 
 STATIC_DIR = Path(__file__).parent.parent / "ui" / "build"
 
@@ -15,13 +15,13 @@ def create_app():
     app = FastAPI(title="Typeflow UI Backend")
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:3000"],  # ya ["*"] for all
+        allow_origins=["http://localhost:3000"],
         allow_credentials=True,
-        allow_methods=["*"],  # GET, POST, PUT, DELETE etc
-        allow_headers=["*"],  # Authorization, Content-Type etc
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
     app.include_router(api.router, prefix="/api")
-    app.mount("/outputs", StaticFiles(directory="data/outputs"), name="outputs")
+    app.mount("/outputs", StaticFiles(directory=OUTPUT_DIR), name="outputs")
     app.mount(
         "/",
         StaticFiles(directory=STATIC_DIR, html=True),

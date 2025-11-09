@@ -6,6 +6,8 @@ __pycache__/
 *.pyd
 env/
 venv/
+.venv/
+.typeflow/
 .idea/
 *.egg-info/
 dist/

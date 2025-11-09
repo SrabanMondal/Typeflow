@@ -11,7 +11,6 @@ def create_class(class_name: str):
     """
     cwd = Path.cwd()
 
-    # Check for .typeflow folder
     if not (cwd / ".typeflow").exists():
         typer.echo(
             "Error: Cannot detect .typeflow folder."
@@ -27,7 +26,6 @@ def create_class(class_name: str):
         typer.echo(f"Error: Class '{class_name}' already exists.")
         raise typer.Exit(code=1)
 
-    # Write template to class file
     class_file.write_text(class_template.content.format(class_name=class_name))
 
     typer.echo(f"Class '{class_name}' created successfully in class/{class_name}.py")

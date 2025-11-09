@@ -10,15 +10,12 @@ def yaml_to_class_json(yaml_path: Path) -> dict:
     with open(yaml_path, "r") as f:
         data = yaml.safe_load(f)
 
-    # Basic info
     name = data.get("name")
     description = data.get("description", "")
-    entity_symbol = "C"  # Always class
+    entity_symbol = "C"
 
-    # Fields: appear as both input and output ports
     fields = list(data.get("fields", {}).keys()) if data.get("fields") else []
 
-    # Parse methods (if any)
     methods_data = data.get("methods", {})
     methods = []
 
@@ -41,13 +38,12 @@ def yaml_to_class_json(yaml_path: Path) -> dict:
             }
         )
 
-    # Construct top-level JSON
     class_json = {
         "entity": entity_symbol,
         "name": name,
         "description": description,
         "inputPorts": fields,
-        "outputPorts": fields,  # class fields act as both inputs & outputs
+        "outputPorts": fields,
         "methods": methods,
     }
 

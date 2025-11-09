@@ -102,7 +102,7 @@ def format_input_val(data: dict) -> Any:
                 raise ValueError(f"Invalid boolean value: {raw_val}")
 
         elif vtype in ("list", "set", "dict", "tuple"):
-            # try parsing JSON or Python literal
+           
             try:
                 parsed = json.loads(raw_val) if isinstance(raw_val, str) else raw_val
             except Exception:

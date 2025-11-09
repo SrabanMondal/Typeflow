@@ -15,7 +15,6 @@ def install():
     typeflow_dir = root / ".typeflow"
     workflow_file = root / "workflow" / "workflow.yaml"
 
-    # 1️⃣ Existence checks
     if not typeflow_dir.exists():
         print("⚠️  .typeflow folder not found in root.")
         return
@@ -23,7 +22,6 @@ def install():
         print("⚠️  workflow/workflow.yaml file not found.")
         return
 
-    # 2️⃣ Load workflow.yaml
     with open(workflow_file, "r") as f:
         config = yaml.safe_load(f)
 
@@ -34,7 +32,6 @@ def install():
     nodes = config.get("nodes", [])
     classes = config.get("classes", [])
 
-    # 3️⃣ Install dependencies
     if deps:
         print("\n📦 Installing dependencies via uv...")
         for dep in deps:
@@ -43,7 +40,6 @@ def install():
     else:
         print("\n📦 No dependencies listed.")
 
-    # 4️⃣ Validate nodes
     if nodes:
         print("\n🧩 Validating nodes...")
         for node in nodes:
@@ -52,7 +48,6 @@ def install():
     else:
         print("\n🧩 No nodes found in workflow.yaml.")
 
-    # 5️⃣ Validate classes
     if classes:
         print("\n🏗️  Validating classes...")
         for cls in classes:

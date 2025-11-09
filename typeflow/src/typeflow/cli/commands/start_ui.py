@@ -2,7 +2,7 @@ import typer
 import uvicorn
 
 
-def start_ui(port: int = 3001):
+def start_ui(port: int = 3000):
     """
     Starts the Typeflow visual editor (UI + API server)
     """
