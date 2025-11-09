@@ -1,17 +1,12 @@
 # 🌀 TypeFlow
 
 # tasks
-## backend
-- type fix for input/output nodes
-- event check on sse event jsons print
 ## frontend
-- ui for events
-- input file/img upload - passing path string
 - X to I type symbol for input
-- output img receive check
+
 ## next
-- dependency management
 - async
+- workflow loops
 
 **Composable, Type-Safe, Reproducible Python Workflows.**
 

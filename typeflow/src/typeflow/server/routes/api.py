@@ -39,7 +39,7 @@ async def run_script(session_id:str, script_path:Path):
         if not proc.stdout:
             return
         async for line in proc.stdout:
-            print("logs: ",line)
+            # print("logs: ",line)
             text = line.decode().strip()
             if not text:
                 continue
@@ -56,7 +56,7 @@ async def run_script(session_id:str, script_path:Path):
         if not proc.stderr:
             return
         async for line in proc.stderr:
-            print("logs: ",line)
+            # print("logs: ",line)
             text = line.decode().strip()
             if not text:
                 continue
@@ -166,9 +166,9 @@ async def stream(session_id: str):
         try:
             while True:
                 msg = await queue.get()
-                print("msg:", msg)
+                # print("msg:", msg)
                 yield f"data: {json.dumps(msg)}\n\n"
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.2)
                 if msg.get("event") in {"workflow_complete", "workflow_error"}:
                     break
         finally:

@@ -15,6 +15,16 @@ export default function InputNode({ id, data }: InputNodeProps) {
   const [value, setValue] = useState(data.value);
   const [isValid, setIsValid] = useState(true);
   const { updateXNodeData } = useUpdateXNode();
+  const [name, setName] = useState(data.name);
+
+  const handleNameChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newName = e.target.value;
+      setName(newName);
+      updateXNodeData(id, { name: newName });
+    },
+    [id, updateXNodeData]
+  );
   const checkValid = useCallback(
     (val: string): boolean => {
       try {
@@ -60,19 +70,47 @@ export default function InputNode({ id, data }: InputNodeProps) {
     [id, updateXNodeData, checkValid]
   );
 
+  const getHelpValue = (type: string):string=>{
+        switch(type){
+           case "str":
+            return "Any text";
+          case "int":
+          case "number":
+             return "Eg. 2,6,21."
+          case "float":
+            return "Eg. 2.5, 8.006.";
+          case "bool":
+            return "Eg. true, false"
+          case "list":
+          case "tuple":
+          case "set":
+            return "Eg. [1,2], [3,6,8]"
+          case "dict":
+            return 'Eg. {"val":67}'
+          default:
+            return ""
+        }
+  }
+
   return (
     <div
       className={`rounded-md border bg-white shadow-sm px-2 py-2 w-44 transition-colors
         ${isValid ? "border-green-400" : "border-red-400"}`}
     >
-      <div
-        className="font-medium text-green-600 text-sm mb-1 truncate"
-        title={data.description}
-      >
-        🧩 {data.name}
+      <div className="mb-1">
+        <input
+          type="text"
+          value={name}
+          onChange={handleNameChange}
+          className="w-full text-sm font-medium bg-gray-100 px-1 rounded-md text-green-600 outline-none border-b border-transparent focus:border-green-400"
+        />
       </div>
 
-      <div className="mb-1 text-xs text-gray-500">{data.valueType}</div>
+      <div className="text-xs font-medium mb-1">{data.description}</div>
+
+
+      <div className="text-xs text-gray-500">{data.valueType}</div>
+      <div className="text-[10px] text-gray-800 font-medium mb-1">{getHelpValue(data.valueType)}</div>
 
        {data?.file ? (
       <input

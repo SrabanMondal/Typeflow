@@ -150,13 +150,13 @@ function EditorInner() {
       <div className="absolute top-4 right-4 flex gap-3 z-50">
         <button
           onClick={handleExport}
-          className="px-4 py-2 bg-linear-to-r from-indigo-500 to-purple-500 text-white font-medium rounded-lg shadow-md hover:scale-105 transition-transform"
+          className="px-4 py-2 cursor-pointer bg-linear-to-r from-indigo-500 to-purple-500 text-white font-medium rounded-lg shadow-md hover:scale-105 transition-transform"
         >
           Export
         </button>
         <button
           onClick={handleImportButton}
-          className="px-4 py-2 bg-linear-to-r from-emerald-500 to-teal-500 text-white font-medium rounded-lg shadow-md hover:scale-105 transition-transform"
+          className="px-4 py-2 cursor-pointer bg-linear-to-r from-emerald-500 to-teal-500 text-white font-medium rounded-lg shadow-md hover:scale-105 transition-transform"
         >
           Import
         </button>
@@ -165,8 +165,8 @@ function EditorInner() {
           disabled={running}
           className={`px-4 py-2 font-medium rounded-lg shadow-md transition-transform ${
             running
-              ? "bg-gray-400 text-white"
-              : "bg-linear-to-r from-pink-500 to-red-500 text-white hover:scale-105"
+              ? "bg-gray-400 text-white cursor-not-allowed"
+              : "bg-linear-to-r from-pink-500 to-red-500 text-white cursor-pointer hover:scale-105"
           }`}
         >
           {running ? "Running..." : "Start"}
