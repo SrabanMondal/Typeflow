@@ -31,9 +31,28 @@ def install(
         config = yaml.safe_load(f)
 
     name = config.get("name", "Unnamed Workflow")
+    declared_py = config.get("python")
     deps_list = config.get("dependencies", [])
 
     typer.echo(f"🚀 Installing workflow: {name}\n")
+    
+    # ----------------------------
+    # 🔍 Python version check
+    # ----------------------------
+    current_py = f"{sys.version_info.major}.{sys.version_info.minor}"
+    if declared_py:
+        if declared_py != current_py:
+            typer.echo(
+                f"⚠️  Python version mismatch:\n"
+                f"   → Workflow expects: {declared_py}\n"
+                f"   → Current interpreter: {current_py}\n"
+                "   This may cause dependency or runtime issues.\n"
+            )
+        else:
+            typer.echo(f"🐍 Python version OK ({current_py})\n")
+    else:
+        typer.echo(f"ℹ️  No Python version specified in workflow.yaml (current: {current_py})\n")
+
 
     # ----------------------------
     # Case 1: Default (no flags)

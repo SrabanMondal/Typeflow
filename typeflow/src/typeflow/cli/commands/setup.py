@@ -32,12 +32,16 @@ def setup(app_name: str):
     (src / "nodes" / "__init__.py").touch()
     (src / "classes" / "__init__.py").touch()
 
+    python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
+    typer.echo(f"🐍 Detected Python version: {python_version}")
+
     # Write templates
     (root / ".gitignore").write_text(gitignore.content)
     (root / "README.md").touch()
     (root / "workflow" / "workflow.yaml").write_text(
-        workflow_yaml.content.format(workflow_name=app_name)
+        workflow_yaml.content.format(workflow_name=app_name, python_version=python_version)
     )
+
 
     # Initialize uv project
     typer.echo("Initializing uv project...")
