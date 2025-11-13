@@ -63,7 +63,12 @@ def setup(app_name: str):
     typer.echo("Installing typeflow inside project .venv...")
     try:
         subprocess.run(
-            ["uv", "add", "typeflow"],
+            ["uv", "add", "pip"],
+            cwd=root,
+            check=True,
+        )
+        subprocess.run(
+            ["pip", "install", "--pre", "typeflow"],
             cwd=root,
             check=True,
         )

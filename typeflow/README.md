@@ -1,169 +1,156 @@
-# 🌀 TypeFlow
+# Typeflow
 
-# tasks
-## cli
-active flag in install (optional in setup)
+**Typeflow** is a **visual, type-safe workflow engine** for Python.  
+It turns your **Python functions and classes** into **reusable visual nodes** that can be connected to build **complete systems**.
 
-## frontend
-- X to I type symbol for input
-
-## next
-- async
-- workflow loops
-
-**Composable, Type-Safe, Reproducible Python Workflows.**
-
-TypeFlow is a modular low-code framework for building, managing, and executing Python workflows through a visual editor and CLI.  
-It brings together **declarative workflow definitions**, **auto-managed environments**, and **typed DAG compilation** — ensuring your pipelines are both **reproducible** and **type-safe**.
+You **design workflows visually** — Typeflow **generates the orchestrator** and **runs it with full type validation**.
 
 ---
 
-## 🚀 Features
+## Features
 
 | Feature | Description |
 |--------|-------------|
-| 🧩 **Node-based architecture** | Each function or class is a modular, reusable node. |
-| 🧠 **Auto type inference** | Input/output ports inferred from Python type hints. |
-| 📦 **Dependency management via `uv`** | Reproducible Python environments with lockfiles. |
-| 🔄 **Workflow manifest** | Declarative YAML-based metadata tracking all nodes & dependencies. |
-| 🔍 **Type-safe DAG compiler** | Validates compatible input/output types before execution. |
-| 🖥️ **Integrated UI + CLI** | Visual editor for designing workflows, powered by a FastAPI backend. |
-| 💾 **Hidden `.typeflow` build system** | Stores node manifests, compiled scripts, cache, etc. |
-| 🌐 **Public & private nodes** | Supports reusable and shareable nodes. |
-| ⚙️ **Reproducibility-first** | Workflows can be cloned, locked, and replayed anywhere. |
+| **Visual DAG editor** | React Flow UI served **locally** |
+| **Type-safe nodes** | `@node()` and `@node_class` decorators |
+| **Deterministic lifecycle** | `compile → generate → run` |
+| **Live execution** | Real-time updates via **Server-Sent Events (SSE)** |
+| **Auto orchestrator** | Generates `src/orchestrator.py` |
+| **Isolated dependencies** | Project-level `.venv` via **uv** |
+| **Python-first** | No external server or cloud required |
+| **Fully offline** | Pure local development |
 
 ---
 
-## 🧭 Quick Start
+## Installation
 
-### 0. Install TypeFlow
 ```bash
 pip install typeflow
 ```
 
-### 1️⃣ Initialize a new workflow
+---
+
+## Quickstart
+
+### 1. Create a new project
+
 ```bash
-typeflow init workflow
+typeflow setup my_project
+cd my_project
+source .venv/bin/activate    # macOS/Linux
+# or
+.\.venv\Scripts\activate     # Windows
 ```
 
-This creates:
+### 2. Create your first node
 
-```
-workflow/
-├── workflow.yaml
-├── dag.json
-├── uv.lock
-└── .typeflow/
-```
-
-### 2️⃣ Create a new node
 ```bash
-typeflow create node text_clean
+typeflow create-node word_counter
 ```
 
-Generates:
-
-```
-nodes/
-└── text_clean/
-    ├── main.py
-    └── test_text_clean.py
-```
-
-Edit `main.py` and use the `@node` decorator:
+Edit `src/nodes/word_counter/main.py`:
 
 ```python
 from typeflow import node
 
-@node
-def text_clean(text: str) -> str:
-    return text.strip().lower()
+@node()
+def word_counter(text: str) -> int:
+    """Count words in a string."""
+    return len(text.split())
 ```
 
-### 3️⃣ Validate & Track the Node
+### 3. Create a class node
+
 ```bash
-typeflow validate node text_clean
+typeflow create-class TextFormatter
 ```
 
-This:
-- Extracts type hints
-- Generates node manifest YAML
-- Updates `workflow.yaml`
+Edit `src/classes/TextFormatter.py`:
 
-### 4️⃣ Build the Workflow
+```python
+from typeflow import node_class
+
+@node_class
+class TextFormatter:
+    prefix: str = ""
+    suffix: str = ""
+
+    def format(self, text: str) -> str:
+        """Apply prefix and suffix."""
+        return f"{self.prefix}{text}{self.suffix}"
+```
+
+### 4. Validate all nodes
+
+```bash
+typeflow validate
+```
+
+### 5. Open the visual editor
+
+```bash
+typeflow start-ui
+```
+
+Navigate to: [http://localhost:8000](http://localhost:8000)
+
+### 6. Build your workflow
+
+Drag and connect:
+
+```
+Input → TextFormatter.format → word_counter → Output
+```
+
+### 7. Compile, generate, and run
+
 ```bash
 typeflow compile
+typeflow generate
+typeflow run
 ```
 
-Compiles the DAG from `dag.json` (created via UI).  
-Ensures all types match.  
-Generates a reproducible workflow script in `.typeflow/build/`.
-
-> Use the visual editor to create `dag.json` — see next step.
-
-### 5️⃣ Start the UI
-```bash
-typeflow start ui
-```
-
-Launches FastAPI server at [`http://localhost:3000`](http://localhost:3000)
-
-Serves:
-- Visual editor (Next.js static export)
-- API endpoints:
-  - `/api` → Fetch all nodes (`yaml` → `json`)
-  - `/api/dag` → Load `dag.json`
-  - `/api/save` → Save modified DAG from UI
+This builds and executes the orchestrator at `src/orchestrator.py`.
 
 ---
 
-## 🧩 Workflow Manifest Example (`workflow.yaml`)
+## Documentation
 
-```yaml
-name: sample-workflow
-python: "3.11"
-dependencies:
-  - pandas
-  - requests
-nodes:
-  - text_clean
-  - console
-```
+Complete documentation, examples, and guides are available at:
+
+[https://typeflow.dev](https://typeflow.dev) *(replace with your hosted MkDocs URL)*
 
 ---
 
-## 🧠 Design Philosophy
+## Why Typeflow?
 
-> **“Every workflow should be human-readable, type-safe, and reproducible — without writing boilerplate orchestration code.”**
-
-TypeFlow bridges **traditional scripting** and **visual workflow authoring**, making it easy to:
-
-- Convert any Python function or class into a typed node  
-- Visually connect nodes into DAGs  
-- Compile and run with **guaranteed reproducibility**
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-
-1. Fork the repo
-2. Create a feature branch
-3. Submit a Pull Request
-
-We especially love:
-- New node templates
-- DAG validators
-- UI improvements
-- Performance optimizations
+- Brings **structure, clarity, and determinism** to workflow creation  
+- Makes **Python functions/classes visually orchestratable**  
+- Encourages **modular, strongly typed design**  
+- **Future-ready** for **AI-assisted node generation**  
+- Ideal for:  
+  - Data pipelines  
+  - ETL  
+  - Automation  
+  - ML preprocessing  
+  - AI agents  
 
 ---
 
-## 🧾 License
+## Contributing
 
-**MIT License** © 2025 TypeFlow
+Contributions are **welcome**!  
+See [`CONTRIBUTING.md`](./docs/contributing.md) or See Contributing from hosted Documentation for details on:
+
+- Development workflow  
+- Testing standards  
+- Area ownership  
 
 ---
 
-**TypeFlow** — *Where code meets clarity, and pipelines never break.*
+## License
+
+Licensed under the **GNU General Public License**.
+
+---
+
