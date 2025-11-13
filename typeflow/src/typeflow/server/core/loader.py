@@ -13,6 +13,7 @@ WORKFLOW_DIR = Path("workflow")
 
 def load_dag():
     f = WORKFLOW_DIR / "dag.json"
+    
     return json.loads(f.read_text()) if f.exists() else {}
 
 

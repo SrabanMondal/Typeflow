@@ -1,6 +1,9 @@
 # 🌀 TypeFlow
 
 # tasks
+## cli
+active flag in install (optional in setup)
+
 ## frontend
 - X to I type symbol for input
 

@@ -18,12 +18,12 @@ def node():
         for param_name in sig.parameters:
             if param_name not in type_hints:
                 raise ValueError(
-                    f"Missing type hint for parameter '{param_name}' in function '{func.__name__}'."
+                    f"Missing type hint for parameter '{param_name}' in function '{func.__name__}'. "
                     "Please provide type hints."
                 )
         if "return" not in type_hints:
             raise ValueError(
-                f"Missing return type hint for function '{func.__name__}'."
+                f"Missing return type hint for function '{func.__name__}'. "
                 " Please provide type hints."
             )
 
@@ -47,7 +47,7 @@ def node():
         if not metadata["description"]:
             param_names = ", ".join(sig.parameters.keys())
             metadata["description"] = (
-                f"Function '{func.__name__}' takes parameters {param_names or 'none'}"
+                f"Function '{func.__name__}' takes parameters {param_names or 'none'}. "
                 f"It returns a value of type {metadata['returns']}."
             )
 

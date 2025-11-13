@@ -1,0 +1,58 @@
+site_name: Typeflow
+site_description: Modular, type-safe, deterministic visual programming interface for Python workflows
+repo_url: https://github.com/SrabanMondal/Typeflow
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.instant
+    - navigation.top
+    - content.code.copy
+    - content.tabs.link
+    - search.suggest
+    - search.highlight
+    - toc.integrate
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - codehilite
+  - def_list
+  - footnotes
+  - attr_list
+  - md_in_html
+  - tables
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Quickstart: quickstart.md
+  - CLI Reference: cli.md
+  - Nodes & Classes:
+      - Node Basics: nodes.md
+      - Class Nodes: classes.md
+  - Visual Editor: editor.md
+  - Workflow System: workflow.md
+  - Examples: examples.md
+  - Contributing: contributing.md
