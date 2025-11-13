@@ -1,7 +1,9 @@
 import os
 
 import yaml
-from .io_utils import load_io_data, get_node_value_type
+
+from .io_utils import get_node_value_type, load_io_data
+
 
 # ------------------------------
 # Adjacency list creator
@@ -100,7 +102,7 @@ def lookup_port_type(port_str, io_nodes, node_id):
         else:
             return meta["inputs"][port]
 
-    elif node_type == "X" or node_type=="O":
+    elif node_type == "X" or node_type == "O":
         return get_node_value_type(node_id, io_nodes)
 
     else:
@@ -121,7 +123,7 @@ def validate_edge(src, src_port, tgt_node, tgt_port, io_nodes):
 
     if src_type != tgt_type:
         tgt_node_type = tgt_node.split(":")[0]
-        if tgt_node_type=="O":
+        if tgt_node_type == "O":
             print("Output node skipped type validation")
             return True
         print(

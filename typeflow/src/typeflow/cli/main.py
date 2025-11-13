@@ -1,18 +1,16 @@
 import typer
 
-from typeflow.core.first import greet
-
 from .commands import (
     add,
     compile_graph,
     create_class,
     create_node,
     generate,
+    install,
     run,
     setup,
     start_ui,
     validate,
-    install,
 )
 
 app = typer.Typer(
@@ -26,6 +24,7 @@ app = typer.Typer(
 def main():
     """TypeFlow CLI tool for workflow automation."""
     pass
+
 
 app.command()(setup.setup)
 app.command()(create_class.create_class)

@@ -45,7 +45,7 @@ def node_class(cls):
     }
 
     # Fields → ports
-        
+
     for field_name, field_type in type_hints.items():
         metadata["fields"][field_name] = simplify_type(field_type)
     metadata["fields"]["self"] = cls.__name__
@@ -56,11 +56,11 @@ def node_class(cls):
             continue
 
         sig = inspect.signature(method)
-        
+
         for p in sig.parameters.values():
             if p.name != "self":
                 validate_type(p.annotation)
-                
+
         params = {
             p.name: simplify_type(p.annotation)
             for p in sig.parameters.values()

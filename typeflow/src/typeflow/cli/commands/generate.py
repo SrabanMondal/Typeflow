@@ -8,7 +8,7 @@ from typeflow.utils import load_compiled_graphs
 
 def generate():
     """Generate orchestrator script based on compiled graphs."""
-    #typer.echo("🔧 Loading compiled adjacency data...")
+    # typer.echo("🔧 Loading compiled adjacency data...")
     adj_list, rev_adj_list = load_compiled_graphs()
 
     typer.echo("🧠 Generating orchestrator script...")

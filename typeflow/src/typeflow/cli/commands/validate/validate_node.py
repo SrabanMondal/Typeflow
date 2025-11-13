@@ -1,7 +1,9 @@
-import typer
 import subprocess
 import sys
 from pathlib import Path
+
+import typer
+
 from .utils import check_decorator, update_workflow_yaml
 
 

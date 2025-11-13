@@ -1,9 +1,10 @@
-from fastapi import FastAPI, BackgroundTasks
-from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
-from typeflow.server.routes import api
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from typeflow.server.routes import api
 
 STATIC_DIR = Path(__file__).parent.parent / "ui" / "build"
 
@@ -22,12 +23,8 @@ def create_app():
     )
     app.include_router(api.router, prefix="/api")
     app.mount("/outputs", StaticFiles(directory=OUTPUT_DIR), name="outputs")
-    app.mount(
-        "/",
-        StaticFiles(directory=STATIC_DIR, html=True),
-        name="ui"
-    )
+    app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="ui")
     return app
 
-app = create_app()
 
+app = create_app()

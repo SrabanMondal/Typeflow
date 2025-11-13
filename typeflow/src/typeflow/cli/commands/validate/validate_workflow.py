@@ -1,11 +1,12 @@
 # commands/validate/validate_workflow.py
 
-import typer
 from pathlib import Path
+
+import typer
 import yaml
 
-from .validate_node import validate_node
 from .validate_class import validate_class
+from .validate_node import validate_node
 
 
 def validate_workflow():

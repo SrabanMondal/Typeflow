@@ -1,20 +1,22 @@
-from fastapi import APIRouter, HTTPException, BackgroundTasks, UploadFile, File, Form
+import asyncio
+import json
+import os
+import re
+import shutil
+import sys
+import uuid
+from pathlib import Path
+
+from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
+
+from typeflow.core import generate_script, write_script_to_file
 from typeflow.server.core.loader import load_dag, load_nodes_classes
-from typeflow.server.core.saver import create_const_yamls, save_workflow
-from typeflow.utils import (
+from typeflow.server.core.saver import save_workflow
+from typeflow.utils import (  # validate_graph,
     create_adjacency_lists,
     extract_io_nodes,
-    #ensure_structure,
-    save_compiled,
-    #validate_graph,
 )
-from pathlib import Path
-from typeflow.core import generate_script, write_script_to_file
-from typeflow.utils import load_compiled_graphs
-
-import asyncio, uuid, sys, os, json
-import shutil, re
 
 UPLOAD_DIR = Path("data/inputs")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -27,11 +29,14 @@ router = APIRouter()
 
 sessions: dict[str, asyncio.Queue] = {}
 
-async def run_script(session_id:str, script_path:Path):
+
+async def run_script(session_id: str, script_path: Path):
     proc = await asyncio.create_subprocess_exec(
-        sys.executable, "-m", "src.orchestrator_live",
+        sys.executable,
+        "-m",
+        "src.orchestrator_live",
         stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
+        stderr=asyncio.subprocess.PIPE,
     )
     queue = sessions[session_id]
 
@@ -71,15 +76,9 @@ async def run_script(session_id:str, script_path:Path):
     return_code = await proc.wait()
 
     if return_code != 0:
-        await queue.put({
-            "event": "workflow_error",
-            "data": f"Exit code {return_code}"
-        })
+        await queue.put({"event": "workflow_error", "data": f"Exit code {return_code}"})
     else:
-        await queue.put({
-            "event": "workflow_complete",
-            "data": None
-        })
+        await queue.put({"event": "workflow_complete", "data": None})
     try:
         if os.path.exists(script_path):
             os.remove(script_path)
@@ -89,21 +88,23 @@ async def run_script(session_id:str, script_path:Path):
     except Exception as e:
         print(f"⚠️ Error deleting script: {e}")
 
+
 @router.post("/start")
-async def start_script(data:dict, background_tasks: BackgroundTasks):
+async def start_script(data: dict, background_tasks: BackgroundTasks):
     try:
         session_id = str(uuid.uuid4())
         sessions[session_id] = asyncio.Queue()
         adj_list, rev_adj_list = create_adjacency_lists(data)
         io_nodes = extract_io_nodes(data)
-        script = generate_script(adj_list, rev_adj_list,True, io_nodes)
+        script = generate_script(adj_list, rev_adj_list, True, io_nodes)
         output_path = Path.cwd() / "src" / "orchestrator_live.py"
         write_script_to_file(script, output_path)
-    except:
-        return  {"message": "Some unknown error"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
     background_tasks.add_task(run_script, session_id, output_path)
     return {"session_id": session_id, "message": "Script execution started"}
+
 
 @router.get("/dag")
 def get_dag():
@@ -144,7 +145,6 @@ async def upload_file(file: UploadFile = File(...), nodeId: str = Form(...)):
     raise HTTPException(status_code=400, detail="")
 
 
-
 # ----------- SSE Event Stream -----------
 # async def event_generator():
 #     while True:
@@ -152,16 +152,16 @@ async def upload_file(file: UploadFile = File(...), nodeId: str = Form(...)):
 #         print("msg: ",msg)
 #         yield f"data: {json.dumps(msg)}\n\n"
 #         await asyncio.sleep(1)
-        
+
 
 @router.get("/stream")
 async def stream(session_id: str):
     queue = sessions.get(session_id)
     if not queue:
         return StreamingResponse(
-            iter([b"data: session not found\n\n"]),
-            media_type="text/event-stream"
+            iter([b"data: session not found\n\n"]), media_type="text/event-stream"
         )
+
     async def event_generator():
         try:
             while True:
@@ -174,9 +174,13 @@ async def stream(session_id: str):
         finally:
             sessions.pop(session_id, None)
             print(f"🧹 Cleaned up session {session_id}")
-    return StreamingResponse(event_generator(), media_type="text/event-stream",headers={
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
             "X-Accel-Buffering": "no",
-        },)
-    
+        },
+    )

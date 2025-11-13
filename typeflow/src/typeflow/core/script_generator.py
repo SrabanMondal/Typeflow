@@ -1,11 +1,7 @@
-import json, base64
-from io import BytesIO
-import pandas as pd
 from collections import deque
 from pathlib import Path
-from PIL import Image
-import numpy as np
-from typeflow.utils import format_input_val, load_const, get_io_node, load_io_data
+
+from typeflow.utils import format_input_val, get_io_node, load_io_data
 
 # -------------------------------
 # Graph utilities
@@ -46,8 +42,7 @@ def topo_kahn(adj_list):
 # -------------------------------
 
 
-
-send_output_def = '''
+send_output_def = """
 import uuid, os, json
 from pathlib import Path
 from PIL import Image
@@ -58,13 +53,19 @@ OUTPUT_DIR = Path("data/outputs")
 OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
 def send_output(value, type_, node):
     if type_ == "text":
-        print(json.dumps({"event": "node_output", "outputType": type_, "id" : node, "val": str(value)}))
+        print(json.dumps(
+            {"event": "node_output", "outputType": type_, "id" : node, "val": str(value)}
+            ))
     elif type_ == "json":
         try:
             json.dumps(value)
-            print(json.dumps({"event": "node_output", "outputType": type_, "id": node, "val": value}))
+            print(json.dumps(
+                {"event": "node_output", "outputType": type_, "id": node, "val": value}
+                ))
         except Exception:
-            print(json.dumps({"event": "node_output", "outputType": type_, "id": node, "val": str(value)}))
+            print(json.dumps(
+                {"event": "node_output", "outputType": type_, "id": node, "val": str(value)}
+                ))
     elif type_ == "table":
         if isinstance(value, pd.DataFrame):
             data = value.to_dict(orient="records")
@@ -101,8 +102,7 @@ def send_output(value, type_, node):
             "val": f"/outputs/{img_id}"
         }))
         return
-'''
-
+"""
 
 
 def instance_name_from_cls_key(cls_key):
@@ -213,7 +213,9 @@ def generate_script(adj_list, rev_adj_list, live=False, ports=None):
                 ]
                 arg_str = ", ".join(args)
                 if live:
-                    lines.append(f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))')
+                    lines.append(
+                        f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))'
+                    )
                 if self_edge:
                     src_node, src_handle, _ = self_edge
                     src_expr = port_to_expr(src_node, src_handle)
@@ -224,7 +226,9 @@ def generate_script(adj_list, rev_adj_list, live=False, ports=None):
                 else:
                     lines.append(f"{inst_var} = {cls_name}({arg_str})")
                 if live:
-                    lines.append(f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))')
+                    lines.append(
+                        f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))'
+                    )
                 continue
 
             # ---- Subnode (method) ----
@@ -242,10 +246,14 @@ def generate_script(adj_list, rev_adj_list, live=False, ports=None):
                 ]
                 arg_str = ", ".join(args)
                 if live:
-                    lines.append(f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))')
+                    lines.append(
+                        f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))'
+                    )
                 lines.append(f"{out_var} = {inst_var}.{method}({arg_str})")
                 if live:
-                    lines.append(f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))')
+                    lines.append(
+                        f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))'
+                    )
                 continue
 
         # ----- Functions -----
@@ -257,7 +265,9 @@ def generate_script(adj_list, rev_adj_list, live=False, ports=None):
             arg_str = ", ".join(args)
 
             if live:
-                lines.append(f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))')
+                lines.append(
+                    f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))'
+                )
             consumers_exist = any(
                 node in [dst for dst, _, _ in edges] for edges in adj_list.values()
             )
@@ -266,9 +276,11 @@ def generate_script(adj_list, rev_adj_list, live=False, ports=None):
             else:
                 lines.append(f"{func_name}({arg_str})")
             if live:
-                lines.append(f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))')
+                lines.append(
+                    f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))'
+                )
             continue
-        
+
         if node_type == "O":
             parts = node.split(":")
             out_key = parts[1]  # text_out@3
@@ -280,12 +292,18 @@ def generate_script(adj_list, rev_adj_list, live=False, ports=None):
             expr = port_to_expr(src_node, src_handle)
 
             if live:
-                lines.append(f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))')
+                lines.append(
+                    f'print(json.dumps({{"event": "node_start", "id": "{node}"}}))'
+                )
                 lines.append(f"send_output({expr}, '{out_type}', '{node}')")
-                lines.append(f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))')
+                lines.append(
+                    f'print(json.dumps({{"event": "node_success", "id": "{node}"}}))'
+                )
             continue
     if live:
-        lines.append("\nprint(json.dumps({'event': 'workflow_complete', 'data': None}))")
+        lines.append(
+            "\nprint(json.dumps({'event': 'workflow_complete', 'data': None}))"
+        )
     lines.append("\n# End of generated workflow\n")
     return "\n".join(lines)
 

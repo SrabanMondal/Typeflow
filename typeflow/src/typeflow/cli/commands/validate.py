@@ -59,9 +59,9 @@
 #     if not (cwd / ".typeflow").exists():
 #         typer.echo("Error: Cannot detect .typeflow folder. Run from project root.")
 #         raise typer.Exit(code=1)
-    
+
 #     nodes_dir = cwd / "src" / "nodes"
-    
+
 #     if node_name is None:
 #         typer.echo("No node name provided — validating all nodes in src/nodes/...")
 
@@ -108,7 +108,7 @@
 #         typer.echo("Error: Cannot detect .typeflow folder. Run from project root.")
 #         raise typer.Exit(code=1)
 #     classes_dir = cwd / "src" / "classes"
-    
+
 #     if class_name is None:
 #         typer.echo("No class name provided — running validation for all classes...")
 #         py_files = [f for f in classes_dir.glob("*.py") if f.name != "__init__.py"]
@@ -122,7 +122,7 @@
 #             typer.echo(f"\n➡ Validating class: {cls_name}")
 #             validate_class(cls_name)
 #         return
-    
+
 #     class_file = cwd / "src" / "classes" / f"{class_name}.py"
 #     if not class_file.exists():
 #         typer.echo(f"Error: Class '{class_name}' does not exist.")

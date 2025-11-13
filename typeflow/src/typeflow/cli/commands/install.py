@@ -1,8 +1,10 @@
 import subprocess
-import yaml
-from pathlib import Path
 import sys
+from pathlib import Path
+
 import typer
+import yaml
+
 
 def run_cmd(cmd: list[str], cwd: Path = Path(".")):
     """Run a subprocess command and stream output live."""
@@ -12,9 +14,14 @@ def run_cmd(cmd: list[str], cwd: Path = Path(".")):
         typer.echo(f"❌ Command failed: {' '.join(cmd)}", file=sys.stderr)
         raise typer.Exit(code=e.returncode)
 
+
 def install(
-    active: bool = typer.Option(False, "--active", "-a", help="Use existing virtual environment and sync deps"),
-    deps: bool = typer.Option(False, "--deps", "-d", help="Initialize uv project and add deps manually"),
+    active: bool = typer.Option(
+        False, "--active", "-a", help="Use existing virtual environment and sync deps"
+    ),
+    deps: bool = typer.Option(
+        False, "--deps", "-d", help="Initialize uv project and add deps manually"
+    ),
 ):
     root = Path(".")
     typeflow_dir = root / ".typeflow"
@@ -35,7 +42,7 @@ def install(
     deps_list = config.get("dependencies", [])
 
     typer.echo(f"🚀 Installing workflow: {name}\n")
-    
+
     # ----------------------------
     # 🔍 Python version check
     # ----------------------------
@@ -51,8 +58,9 @@ def install(
         else:
             typer.echo(f"🐍 Python version OK ({current_py})\n")
     else:
-        typer.echo(f"ℹ️  No Python version specified in workflow.yaml (current: {current_py})\n")
-
+        typer.echo(
+            f"ℹ️  No Python version specified in workflow.yaml (current: {current_py})\n"
+        )
 
     # ----------------------------
     # Case 1: Default (no flags)
@@ -120,8 +128,6 @@ def install(
     mode = (
         "Fresh setup (init + sync)"
         if not active and not deps
-        else "Active environment sync"
-        if active
-        else "Manual deps install"
+        else "Active environment sync" if active else "Manual deps install"
     )
     typer.echo(f"\n🧩 Mode: {mode}")

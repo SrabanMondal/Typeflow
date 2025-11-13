@@ -1,6 +1,6 @@
 import re
 from typing import Any, get_args, get_origin
-import typer
+
 
 def short_typename(t: Any) -> str:
     """Get short readable typename (no typing. prefix)."""
@@ -54,11 +54,6 @@ def validate_type(t: Any):
             return
         if getattr(t, "__is_node_class__", False):
             return
-        # raise ValueError(f"Class {t.__name__} is not a valid node class. Using an external dependency class.")
-        # typer.echo(
-        #     f"[TypeFlow] Info: Detected external type '{t.__module__}.{t.__name__}'. "
-        #     "Assuming it exists in the runtime environment."
-        # )
         return
 
     if t is Any or t is None:

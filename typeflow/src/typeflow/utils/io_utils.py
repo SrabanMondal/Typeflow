@@ -10,6 +10,7 @@ import yaml
 
 IO_FILE = Path(".typeflow/compiled/io.json")
 
+
 def ensure_structure():
     """Ensure required folders/files exist."""
     cwd = Path.cwd()
@@ -102,7 +103,7 @@ def format_input_val(data: dict) -> Any:
                 raise ValueError(f"Invalid boolean value: {raw_val}")
 
         elif vtype in ("list", "set", "dict", "tuple"):
-           
+
             try:
                 parsed = json.loads(raw_val) if isinstance(raw_val, str) else raw_val
             except Exception:
@@ -120,7 +121,8 @@ def format_input_val(data: dict) -> Any:
     except Exception as e:
         raise ValueError(f"Failed to format value '{raw_val}' as '{vtype}': {e}")
 
-#-------------------------------
+
+# -------------------------------
 def load_const():
     """Load YAML definitions from nodes and classes dirs."""
     CONST_DIR = ".typeflow/consts"
@@ -139,6 +141,8 @@ def load_const():
                     continue
                 const_data[data["name"]] = data
     return const_data
+
+
 # --------------------------------
 
 
@@ -146,17 +150,23 @@ def extract_io_nodes(workflow_json: dict):
     """
     Extracts nodes of type X and O from a workflow JSON and returns them as a list.
     """
-    io_nodes = [node for node in workflow_json.get("nodes", []) if node.get("type") in ("X", "O")]
+    io_nodes = [
+        node
+        for node in workflow_json.get("nodes", [])
+        if node.get("type") in ("X", "O")
+    ]
     return io_nodes
 
-def save_io_nodes(io_nodes: list, filename = IO_FILE):
+
+def save_io_nodes(io_nodes: list, filename=IO_FILE):
     """
     Saves a list of I/O nodes to a JSON file.
     """
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(io_nodes, f, indent=2, ensure_ascii=False)
-    
+
     print(f"✅ Extracted {len(io_nodes)} I/O nodes and saved to {filename}")
+
 
 def load_io_data():
     """Helper function to load io.json"""
@@ -166,7 +176,7 @@ def load_io_data():
         return json.load(f)
 
 
-def get_io_node(node_id: str, nodes:dict):
+def get_io_node(node_id: str, nodes: dict):
     """
     Returns the 'value' of a node with the given ID from io.json.
     """
@@ -176,7 +186,7 @@ def get_io_node(node_id: str, nodes:dict):
     raise KeyError(f"Node '{node_id}' not found in io.json.")
 
 
-def get_node_value_type(node_id: str, nodes:dict):
+def get_node_value_type(node_id: str, nodes: dict):
     """
     Returns the value type of a node (valueType for X nodes, outputType for O nodes).
     """

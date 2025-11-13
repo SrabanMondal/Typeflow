@@ -1,9 +1,12 @@
-import subprocess
-from pathlib import Path
-import typer
-import sys
-from ..template import gitignore, workflow_yaml
 import os
+import subprocess
+import sys
+from pathlib import Path
+
+import typer
+
+from ..template import gitignore, workflow_yaml
+
 
 def setup(app_name: str):
     """
@@ -39,9 +42,10 @@ def setup(app_name: str):
     (root / ".gitignore").write_text(gitignore.content)
     (root / "README.md").touch()
     (root / "workflow" / "workflow.yaml").write_text(
-        workflow_yaml.content.format(workflow_name=app_name, python_version=python_version)
+        workflow_yaml.content.format(
+            workflow_name=app_name, python_version=python_version
+        )
     )
-
 
     # Initialize uv project
     typer.echo("Initializing uv project...")
@@ -80,11 +84,13 @@ def setup(app_name: str):
     typer.echo("\n⚡ Project setup complete!")
     target_path = os.path.join(os.getcwd(), app_name)
     typer.echo(f"\nRun the following command:\n  cd {target_path}")
-    typer.echo(f"👉 To activate the project environment, run:")
+    typer.echo("👉 To activate the project environment, run:")
     if sys.platform.startswith("win"):
-        typer.echo(f"    .venv\\Scripts\\Activate.ps1  # PowerShell")
+        typer.echo("    .venv\\Scripts\\Activate.ps1  # PowerShell")
     else:
-        typer.echo(f"    source .venv/bin/activate  # Linux/macOS")
-    typer.echo("After activation, you can run `typeflow` commands inside this environment. Play Around!")
+        typer.echo("    source .venv/bin/activate  # Linux/macOS")
+    typer.echo(
+        "After activation, you can run `typeflow` commands inside this environment. Play Around!"
+    )
 
     typer.echo(f"\nWorkflow project '{app_name}' created successfully!")

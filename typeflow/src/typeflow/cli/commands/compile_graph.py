@@ -5,10 +5,10 @@ import typer
 from typeflow.utils import (
     create_adjacency_lists,
     ensure_structure,
-    save_compiled,
-    validate_graph,
     extract_io_nodes,
-    save_io_nodes
+    save_compiled,
+    save_io_nodes,
+    validate_graph,
 )
 
 
@@ -31,4 +31,6 @@ def compile():
     if all_valid:
         typer.echo("✅ Workflow compiled and validated successfully!")
     else:
-        typer.echo("⚠️ Workflow compiled but with some validation errors. You can still run it.")
+        typer.echo(
+            "⚠️ Workflow compiled but with some validation errors. You can still run it."
+        )
