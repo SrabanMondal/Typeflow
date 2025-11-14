@@ -14,7 +14,7 @@ Typeflow is distributed as a single Python package that includes both the **CLI*
 ## 🚀 Install
 
 ```bash
-pip install typeflow
+pip install typeflowapp
 ```
 
 **This installs:**
@@ -67,7 +67,7 @@ If you cloned a Typeflow project from GitHub:
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install typeflow
+pip install typeflowapp
 typeflow install
 ```
 

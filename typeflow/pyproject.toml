@@ -1,6 +1,6 @@
 [project]
 name = "typeflowapp"
-version = "0.0.1"
+version = "0.0.3"
 description = ""
 authors = [
     {name = "Sraban Mondal",email = "srabanmondal1@gmail.com"}
@@ -26,8 +26,9 @@ dependencies = [
 packages = [{include = "typeflow", from = "src"}]
 
 include = [
-    { path = "src/typeflow/ui/build/**/*" },
+    "src/typeflow/ui/build/**"
 ]
+
 
 [project.scripts]
 typeflow = "typeflow.cli.main:app"

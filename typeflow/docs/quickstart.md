@@ -11,7 +11,7 @@ This quickstart walks you through building your **first simple data-processing w
 Install Typeflow globally:
 
 ```bash
-pip install typeflow
+pip install typeflowapp
 ```
 
 ---

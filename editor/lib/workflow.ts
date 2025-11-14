@@ -1,11 +1,13 @@
 import api from "./api";
 import { SerializedWorkflow } from "@/types/workflow";
 import { toast } from "react-hot-toast";
+import { updateCountersFromDag } from "./idGenerator";
 
 export async function getDag(): Promise<SerializedWorkflow | null> {
   try {
     const { data } = await api.get<SerializedWorkflow>("/dag");
     toast.success("Workflow loaded successfully ✅");
+    updateCountersFromDag(data);
     return data;
   } catch (error) {
     console.error(error);

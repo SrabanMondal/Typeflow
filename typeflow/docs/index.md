@@ -13,7 +13,8 @@ It bridges **visual orchestration and real Python logic**, combining static typi
 - **Deterministic & synchronous** — predictable execution order  
 - **Visual editor** — connect, edit, and run flows in a clean UI  
 - **Local-first and secure** — no cloud dependency, all data stays local  
-- **Single command setup** — `pip install typeflow` installs everything  
+- **Single command setup** — `pip install typeflowapp` installs everything  
+- **Env variable management in workflow** *(coming soon)*  
 - **AI-assisted node logic** *(coming soon)*  
 - **Asynchronous nodes and Loops** *(coming soon)*  
 - **Public Nodes Registry and Community** *(coming soon)*  
@@ -33,7 +34,7 @@ It bridges **visual orchestration and real Python logic**, combining static typi
 ## Install & Run
 
 ```bash
-pip install typeflow
+pip install typeflowapp
 typeflow setup your_app_name
 ```
 

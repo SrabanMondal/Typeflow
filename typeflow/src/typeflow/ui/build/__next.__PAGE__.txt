@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[12192,["/_next/static/chunks/24e37cc8d11d93d2.js","/_next/static/chunks/01900ab0d3652a9e.js"],"default"]
+3:I[70946,["/_next/static/chunks/24e37cc8d11d93d2.js","/_next/static/chunks/01900ab0d3652a9e.js"],"default"]
+4:I[97367,["/_next/static/chunks/42879de7b8087bc9.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+0:{"buildId":"7wn-Pgp4rQZ-wCw_qQgz-","rsc":["$","$1","c",{"children":[["$","div",null,{"className":"flex h-screen","children":[["$","$L2",null,{}],["$","$L3",null,{}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/01900ab0d3652a9e.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"loading":null,"isPartial":false}
+6:null

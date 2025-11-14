@@ -25,7 +25,7 @@ You **design workflows visually** — Typeflow **generates the orchestrator** an
 ## Installation
 
 ```bash
-pip install typeflow
+pip install typeflowapp
 ```
 
 ---

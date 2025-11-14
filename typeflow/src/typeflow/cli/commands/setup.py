@@ -72,7 +72,7 @@ def setup(app_name: str):
             check=True,
         )
         subprocess.run(
-            ["pip", "install", "--pre", "typeflow"],
+            ["uv", "pip", "install", "--pre", "typeflowapp"],
             cwd=root,
             check=True,
         )

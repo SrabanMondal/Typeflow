@@ -106,6 +106,7 @@ Each node in the editor appears here with:
 | `C`  | Class node (declared via `@node_class`)      |
 | `M`  | Method node (auto-generated from a class method) |
 | `X`  | Constant/Input node (string, int, float, bool, file, tuple, etc.) |
+| `O`  | Output nodes (for editor only) |
 
 ### Example (excerpt)
 

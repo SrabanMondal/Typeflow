@@ -73,6 +73,7 @@ typeflow/
 | **SDK (`node.py`, `nodeclass.py`)** | Extend decorator logic, improve validation |
 | **Server (FastAPI)** | Improve UI-CLI communication, extend SSE |
 | **Utils** | Add helper modules or improve existing ones |
+| **I/O Nodes** | Add new I/O node support in frontend and package or improve existing ones |
 | **Tests** | Add `pytest` coverage for CLI, SDK, core |
 | **Editor (Next.js + React Flow)** | Enhance UX, add inspector panels, visual polish |
 | **Documentation** | Improve or localize docs, write usage guides |
@@ -92,7 +93,7 @@ typeflow/
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/typeflow.git
+git clone https://github.com/SrabanMondal/Typeflow.git
 cd typeflow
 
 # Install dependencies
@@ -182,8 +183,8 @@ We use:
 
 | Feature | Status | Description |
 |-------|--------|-----------|
-| Node parameter control | Implemented | Real-time node parameter UI |
-| Live execution updates | Implemented | SSE-based DAG runtime events |
+| ENV Vars | Planned | Setting env variables for workflow  |
+| Loop And Async Nodes | Planned | Adding Parallel and Looping nodes  |
 | Public Node Registry | Planned | Community-managed reusable nodes |
 | Community Server | Planned | Host, version, publish public nodes |
 | Server-side Execution | Planned | Deploy and execute workflows remotely |
@@ -201,6 +202,7 @@ We encourage contributors to **test Typeflow** on real-world projects:
 - Data ETL  
 - Image processing  
 - Automation  
+- Many more..
 
 Your feedback helps improve **scalability, reliability, and ecosystem adaptability**.
 

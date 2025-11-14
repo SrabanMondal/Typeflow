@@ -16,20 +16,14 @@ def run_cmd(cmd: list[str], cwd: Path = Path(".")):
 
 
 def install(
-    active: bool = typer.Option(
-        False, "--active", "-a", help="Use existing virtual environment and sync deps"
-    ),
     deps: bool = typer.Option(
         False, "--deps", "-d", help="Initialize uv project and add deps manually"
     ),
 ):
     root = Path(".")
-    typeflow_dir = root / ".typeflow"
+
     workflow_file = root / "workflow" / "workflow.yaml"
 
-    if not typeflow_dir.exists():
-        typer.echo("⚠️  .typeflow folder not found in root.")
-        raise typer.Exit(1)
     if not workflow_file.exists():
         typer.echo("⚠️  workflow/workflow.yaml not found.")
         raise typer.Exit(1)
@@ -42,6 +36,10 @@ def install(
     deps_list = config.get("dependencies", [])
 
     typer.echo(f"🚀 Installing workflow: {name}\n")
+    
+    (root / ".typeflow" / "nodes").mkdir(parents=True)
+    (root / ".typeflow" / "classes").mkdir(parents=True)
+    (root / ".typeflow" / "compiled").mkdir(parents=True)
 
     # ----------------------------
     # 🔍 Python version check
@@ -65,15 +63,14 @@ def install(
     # ----------------------------
     # Case 1: Default (no flags)
     # ----------------------------
-    if not active and not deps:
+    if  not deps:
         typer.echo("🧱 Setting up new uv project...")
-        run_cmd(["uv", "init"], cwd=root)
-        typer.echo("✅ uv project initialized successfully!\n")
+        run_cmd(["pip", "install", "uv"], cwd=root)
 
         typer.echo("📦 Installing typeflow inside project .venv...")
         try:
             run_cmd(["uv", "add", "pip"], cwd=root)
-            run_cmd(["pip", "install", "typeflow"], cwd=root)
+            run_cmd(["uv", "add", "typeflow"], cwd=root)
             typer.echo("✅ typeflow installed in project .venv!\n")
         except subprocess.CalledProcessError as e:
             typer.echo(f"❌ Failed to install typeflow: {e}")
@@ -84,20 +81,12 @@ def install(
         typer.echo("✅ Environment fully set up!\n")
 
     # ----------------------------
-    # Case 2: Active flag
-    # ----------------------------
-    elif active:
-        typer.echo("⚙️ Using active environment, syncing dependencies...")
-        run_cmd(["uv", "sync"], cwd=root)
-        typer.echo("✅ Synced successfully using uv.lock!\n")
-
-    # ----------------------------
-    # Case 3: Deps flag
+    # Case 2: Deps flag
     # ----------------------------
     elif deps:
-        typer.echo("🧱 Initializing new uv project...")
-        run_cmd(["uv", "init"], cwd=root)
-        typer.echo("✅ uv project initialized successfully!\n")
+        # typer.echo("🧱 Initializing new uv project...")
+        # run_cmd(["uv", "init"], cwd=root)
+        # typer.echo("✅ uv project initialized successfully!\n")
 
         if deps_list:
             typer.echo("📦 Installing dependencies manually:")
@@ -126,8 +115,8 @@ def install(
 
     # Optional summary line
     mode = (
-        "Fresh setup (init + sync)"
-        if not active and not deps
-        else "Active environment sync" if active else "Manual deps install"
+        "Fresh setup"
+        if not deps
+        else "Manual deps install"
     )
     typer.echo(f"\n🧩 Mode: {mode}")

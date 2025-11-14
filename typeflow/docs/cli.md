@@ -6,7 +6,7 @@ from setup and dependency management to validation, compilation, generation, and
 The CLI is installed automatically when you install the package:
 
 ```bash
-pip install typeflow
+pip install typeflowapp
 ```
 
 ---
