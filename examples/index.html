@@ -1,0 +1,1067 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Modular, type-safe, deterministic visual programming interface for Python workflows">
+      
+      
+      
+      
+        <link rel="prev" href="../workflow/">
+      
+      
+        <link rel="next" href="../contributing/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Examples - Typeflow</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#image-processing-workflow" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Typeflow" class="md-header__button md-logo" aria-label="Typeflow" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Typeflow
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Examples
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SrabanMondal/Typeflow" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Typeflow" class="md-nav__button md-logo" aria-label="Typeflow" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Typeflow
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SrabanMondal/Typeflow" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quickstart
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CLI Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Nodes & Classes
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Nodes & Classes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Node Basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Class Nodes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Visual Editor
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Workflow System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-create-a-new-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      1️⃣ Create a New Project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-add-required-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      2️⃣ Add Required Dependency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-create-function-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      3️⃣ Create Function Nodes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3️⃣ Create Function Nodes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧩 load_image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resize_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧩 resize_image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grayscale" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧩 grayscale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adjust_brightness" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧩 adjust_brightness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#save_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧩 save_image
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-create-a-class-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      4️⃣ Create a Class Node
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-validate-all-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      5️⃣ Validate All Nodes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-build-the-workflow-visually" class="md-nav__link">
+    <span class="md-ellipsis">
+      6️⃣ Build the Workflow Visually
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-compile-and-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      7️⃣ Compile and Run
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-from-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run from Editor
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      8️⃣ Result
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8️⃣ Result">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-generated-orchestrator-auto-created-by-typeflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example generated orchestrator (auto-created by Typeflow)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-showcase-in-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output showcase in editor
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output showcase in editor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next steps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="image-processing-workflow">⚡Image Processing Workflow<a class="headerlink" href="#image-processing-workflow" title="Permanent link">&para;</a></h1>
+<p>Let’s build a <strong>real image processing pipeline</strong> using Typeflow.<br />
+In this tutorial, we’ll build a workflow that:</p>
+<blockquote>
+<p>loads an image → resizes it → converts to grayscale → adjusts brightness → applies watermark → saves the result</p>
+</blockquote>
+<p>All of this will be designed visually in the Typeflow editor and executed deterministically through Python.</p>
+<hr />
+<h2 id="1-create-a-new-project">1️⃣ Create a New Project<a class="headerlink" href="#1-create-a-new-project" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>setup<span class="w"> </span>imageflow
+<span class="nb">cd</span><span class="w"> </span>imageflow
+</code></pre></div>
+
+<p>This scaffolds your project with a virtual environment and structure like:</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">imageflow</span><span class="o">/</span>
+<span class="err">├──</span><span class="w"> </span><span class="p">.</span><span class="nx">typeflow</span><span class="o">/</span>
+<span class="err">├──</span><span class="w"> </span><span class="nx">src</span><span class="o">/</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="nx">nodes</span><span class="o">/</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="nx">classes</span><span class="o">/</span>
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nx">__init__</span><span class="p">.</span><span class="nx">py</span>
+<span class="err">├──</span><span class="w"> </span><span class="nx">workflow</span><span class="o">/</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">yaml</span>
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nx">dag</span><span class="p">.</span><span class="nx">json</span>
+<span class="err">├──</span><span class="w"> </span><span class="nx">pyproject</span><span class="p">.</span><span class="nx">toml</span>
+<span class="err">├──</span><span class="w"> </span><span class="p">.</span><span class="nx">gitignore</span>
+<span class="err">└──</span><span class="w"> </span><span class="nx">README</span><span class="p">.</span><span class="nx">md</span>
+</code></pre></div>
+
+<p>Then activate your virtual environment (created automatically by Typeflow):</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">   </span><span class="c1"># or .\.venv\Scripts\activate on Windows</span>
+</code></pre></div>
+
+<h2 id="2-add-required-dependency">2️⃣ Add Required Dependency<a class="headerlink" href="#2-add-required-dependency" title="Permanent link">&para;</a></h2>
+<p>We’ll need Pillow for image operations.</p>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>add<span class="w"> </span>pillow
+</code></pre></div>
+
+<h2 id="3-create-function-nodes">3️⃣ Create Function Nodes<a class="headerlink" href="#3-create-function-nodes" title="Permanent link">&para;</a></h2>
+<p>We’ll define five simple nodes for image transformations.<br />
+Each node has its own folder under <code>src/nodes/</code> with a <code>main.py</code> file.</p>
+<h3 id="load_image">🧩 load_image<a class="headerlink" href="#load_image" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>create-node<span class="w"> </span>load_image
+</code></pre></div>
+
+<p>Then open <code>src/nodes/load_image/main.py</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typeflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="nd">@node</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_image</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load image from a given path.&quot;&quot;&quot;</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGBA&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span>
+</code></pre></div>
+
+<h3 id="resize_image">🧩 resize_image<a class="headerlink" href="#resize_image" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>create-node<span class="w"> </span>resize_image
+</code></pre></div>
+
+<p>Edit <code>src/nodes/resize_image/main.py</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typeflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="nd">@node</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">resize_image</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">keep_aspect</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resize or thumbnail the image.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">keep_aspect</span><span class="p">:</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">img</span>
+    <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="grayscale">🧩 grayscale<a class="headerlink" href="#grayscale" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>create-node<span class="w"> </span>grayscale
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typeflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="nd">@node</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">grayscale</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert to grayscale while keeping RGBA mode.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGBA&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="adjust_brightness">🧩 adjust_brightness<a class="headerlink" href="#adjust_brightness" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>create-node<span class="w"> </span>adjust_brightness
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typeflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageEnhance</span>
+
+<span class="nd">@node</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">adjust_brightness</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adjust image brightness.&quot;&quot;&quot;</span>
+    <span class="n">enhancer</span> <span class="o">=</span> <span class="n">ImageEnhance</span><span class="o">.</span><span class="n">Brightness</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">enhancer</span><span class="o">.</span><span class="n">enhance</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="save_image">🧩 save_image<a class="headerlink" href="#save_image" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>create-node<span class="w"> </span>save_image
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typeflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="nd">@node</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_image</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save image to a given path.&quot;&quot;&quot;</span>
+    <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="4-create-a-class-node">4️⃣ Create a Class Node<a class="headerlink" href="#4-create-a-class-node" title="Permanent link">&para;</a></h2>
+<p>Let’s define a reusable class that applies watermark text to any image.</p>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>create-class<span class="w"> </span>Watermark
+</code></pre></div>
+
+<p>Edit <code>src/classes/Watermark.py</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typeflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">node_class</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+
+<span class="nd">@node_class</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Watermark</span><span class="p">:</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">position</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">opacity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span>
+    <span class="n">font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply watermark text to image.&quot;&quot;&quot;</span>
+        <span class="n">overlay</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGBA&quot;</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">overlay</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s2">&quot;arial.ttf&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_size</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">()</span>
+
+        <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span><span class="p">),</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Image</span><span class="o">.</span><span class="n">alpha_composite</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">overlay</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="5-validate-all-nodes">5️⃣ Validate All Nodes<a class="headerlink" href="#5-validate-all-nodes" title="Permanent link">&para;</a></h2>
+<p>Before using them, validate your definitions:</p>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>validate<span class="w"> </span>node
+typeflow<span class="w"> </span>validate<span class="w"> </span>class
+</code></pre></div>
+
+<p>Each valid node or class will have a YAML descriptor generated inside <code>.typeflow/</code>.</p>
+<h2 id="6-build-the-workflow-visually">6️⃣ Build the Workflow Visually<a class="headerlink" href="#6-build-the-workflow-visually" title="Permanent link">&para;</a></h2>
+<p>Launch the editor:</p>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>start-ui
+</code></pre></div>
+
+<p>Open <code>http://localhost:3001</code></p>
+<p>In the visual editor:</p>
+<ol>
+<li>Add <strong>Input Node</strong> → <strong>file_path</strong> node (if you want to upload file inside editor) or <strong>string_val</strong> node if you want to write the path of image.  </li>
+<li>Connect to → <strong>load_image</strong>  </li>
+<li>Add <strong>Input Node</strong><ul>
+<li>tuple_val (for size of image for <strong>resize_image</strong>)</li>
+<li>bool_val  (for keep_aspect input to <strong>resize_image</strong>)</li>
+<li>float_val (for factor value for <strong>adjust_brightness</strong>)</li>
+<li>string_val (for text input to <strong>Watermark</strong> class)</li>
+<li>int_val (for opacity input to <strong>Watermark</strong> class) (<em>optional</em>)</li>
+<li>tuple_val (for position input to <strong>Watermark</strong> class) (<em>optional</em>)</li>
+<li>int_val (for font-size input to <strong>Watermark</strong> class) (<em>optional</em>)</li>
+</ul>
+</li>
+<li>Then → <strong>resize_image</strong> → <strong>grayscale</strong> → <strong>adjust_brightness</strong>  </li>
+<li>Then drag <strong>Watermark</strong> on editor</li>
+<li>Double click on <strong>Watermark</strong> to add method <strong>apply</strong>. It will attach its method node to class.</li>
+<li>Connect <strong>adjust_brightness</strong> → <strong>Watermark.apply</strong></li>
+<li>Finally connect → <strong>save_image</strong>  </li>
+<li>Add an <strong>string_val</strong> Input node to specify your output file path. You can copy the folder path from ur laptop and paste it with added output image name.</li>
+</ol>
+<p>Your final DAG should like this.
+<img alt="Typeflow Editor Home" src="../assets/imageflow.png" /><br />
+<em>Caption: The image processing pipeline.</em></p>
+<p><strong>Note</strong>: You can see the name of input nodes in graph are different. You can also change your input node names for visual clarity.</p>
+<p>Hit <strong>Export</strong> to save the graph as <code>workflow/dag.json</code>.</p>
+<h2 id="7-compile-and-run">7️⃣ Compile and Run<a class="headerlink" href="#7-compile-and-run" title="Permanent link">&para;</a></h2>
+<p>From terminal:</p>
+<div class="codehilite"><pre><span></span><code>typeflow<span class="w"> </span>compile
+typeflow<span class="w"> </span>generate
+typeflow<span class="w"> </span>run
+</code></pre></div>
+
+<p>On compile, see type validation in your data flow between the edges, so you can catch any potential errors before running it.
+On generate, typeflow will create <code>src/orchestrator.py</code> script for transparency.</p>
+<h2 id="run-from-editor">Run from Editor<a class="headerlink" href="#run-from-editor" title="Permanent link">&para;</a></h2>
+<p>Instead of compiling and using terminal, you can run directly inside the editor — hit <strong>Start</strong>, and Typeflow will do this behind ths scenes.:</p>
+<ul>
+<li>Compile your DAG  </li>
+<li>Generate an orchestrator Python script  </li>
+<li>Run it in an async subprocess via FastAPI  </li>
+<li>Stream live node execution updates over SSE  </li>
+</ul>
+<h2 id="8-result">8️⃣ Result<a class="headerlink" href="#8-result" title="Permanent link">&para;</a></h2>
+<p>After execution, you’ll find your processed image in the specified output path —<br />
+resized, brightened, converted to grayscale, and watermarked with your custom text.</p>
+<h3 id="example-generated-orchestrator-auto-created-by-typeflow">Example generated orchestrator (auto-created by Typeflow)<a class="headerlink" href="#example-generated-orchestrator-auto-created-by-typeflow" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Auto-generated workflow script</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.classes.Watermark</span><span class="w"> </span><span class="kn">import</span> <span class="n">Watermark</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.nodes.adjust_brightness.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">adjust_brightness</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.nodes.grayscale.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">grayscale</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.nodes.load_image.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.nodes.resize_image.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">resize_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.nodes.save_image.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_image</span>
+
+<span class="n">file_input_1</span> <span class="o">=</span> <span class="s1">&#39;data/X_file_input_1.jpg&#39;</span>
+<span class="n">bool_val_2</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">tuple_val_3</span> <span class="o">=</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">float_val_4</span> <span class="o">=</span> <span class="mf">1.2</span>
+<span class="n">string_val_5</span> <span class="o">=</span> <span class="s1">&#39;Typeflow&#39;</span>
+<span class="n">tuple_val_6</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">int_val_7</span> <span class="o">=</span> <span class="mi">250</span>
+<span class="n">int_val_8</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">string_val_1</span> <span class="o">=</span> <span class="s1">&#39;data/outputs/watermark.png&#39;</span>
+<span class="n">load_image_out</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">file_input_1</span><span class="p">)</span>
+<span class="n">watermark_1</span> <span class="o">=</span> <span class="n">Watermark</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">string_val_5</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">tuple_val_6</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="n">int_val_7</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="n">int_val_8</span><span class="p">)</span>
+<span class="n">resize_image_out</span> <span class="o">=</span> <span class="n">resize_image</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">load_image_out</span><span class="p">,</span> <span class="n">keep_aspect</span><span class="o">=</span><span class="n">bool_val_2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">tuple_val_3</span><span class="p">)</span>
+<span class="n">grayscale_out</span> <span class="o">=</span> <span class="n">grayscale</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">resize_image_out</span><span class="p">)</span>
+<span class="n">adjust_brightness_out</span> <span class="o">=</span> <span class="n">adjust_brightness</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">grayscale_out</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="n">float_val_4</span><span class="p">)</span>
+<span class="n">watermark_1_apply_out</span> <span class="o">=</span> <span class="n">watermark_1</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">adjust_brightness_out</span><span class="p">)</span>
+<span class="n">save_image_out</span> <span class="o">=</span> <span class="n">save_image</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">watermark_1_apply_out</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">string_val_1</span><span class="p">)</span>
+
+<span class="c1"># End of generated workflow</span>
+</code></pre></div>
+
+<p>✅ <strong>Done</strong><br />
+You’ve successfully created a modular, type-safe workflow using Typeflow — all locally, with zero cloud dependency.</p>
+<h2 id="output-showcase-in-editor">Output showcase in editor<a class="headerlink" href="#output-showcase-in-editor" title="Permanent link">&para;</a></h2>
+<p>In Editor, the <strong>Watermark.apply</strong> method outputs <strong>Image</strong>, so you can remove the <strong>save_image</strong> node (for removing just click on node and press DEL/DELETE/BACKSPACE button). And drag a <strong>image_output</strong> node, and connect <strong>Watermark.apply</strong> → <strong>image_output</strong>. And Press on <strong>Start</strong> button to see the image itself on editor. Note: Output nodes only work if you use Editor to run workflow by pressing <strong>Start</strong> button.</p>
+<h3 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Add more nodes to build complex data/AI pipelines  </li>
+<li>Experiment with class-based logic nodes  </li>
+<li>Or embed Typeflow in your own tools as an orchestrator backend</li>
+</ul>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.instant", "navigation.top", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "toc.integrate"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
