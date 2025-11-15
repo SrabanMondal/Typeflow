@@ -246,7 +246,7 @@ See:
 
 Licensed under **GNU General Public License**.
 
-See [`LICENSE`](../LICENSE) for details.
+See [`LICENSE`](LICENSE) for details.
 
 ---
 
