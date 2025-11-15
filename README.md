@@ -1,5 +1,38 @@
 # Typeflow
 
+<p align="center">
+  <a href="https://pypi.org/project/typeflowapp/">
+    <img src="https://img.shields.io/pypi/v/typeflowapp?color=4c1&label=PyPI&style=flat-square" alt="PyPI version">
+  </a>
+  <a href="https://pypi.org/project/typeflowapp/">
+    <img src="https://img.shields.io/pypi/dm/typeflowapp?style=flat-square&color=blue" alt="PyPI downloads">
+  </a>
+  <a href="https://pypi.org/project/typeflowapp/">
+    <img src="https://img.shields.io/pypi/pyversions/typeflowapp?style=flat-square" alt="Python versions">
+  </a>
+  <br>
+  <a href="https://github.com/SrabanMondal/typeflow/blob/main/typeflow/LICENSE">
+    <img src="https://img.shields.io/github/license/SrabanMondal/typeflow?style=flat-square&color=brightgreen" alt="GitHub license">
+  </a>
+  <a href="https://github.com/SrabanMondal/typeflow/issues">
+    <img src="https://img.shields.io/github/issues/SrabanMondal/typeflow?style=flat-square" alt="GitHub issues">
+  </a>
+  <a href="https://github.com/SrabanMondal/typeflow/pulls">
+    <img src="https://img.shields.io/github/issues-pr/SrabanMondal/typeflow?style=flat-square" alt="GitHub pull requests">
+  </a>
+  <a href="https://github.com/SrabanMondal/typeflow/stargazers">
+    <img src="https://img.shields.io/github/stars/SrabanMondal/typeflow?style=flat-square&color=yellow" alt="GitHub stars">
+  </a>
+  <br>
+  <a href="https://github.com/psf/black">
+    <img src="https://img.shields.io/badge/code%20style-black-000000?style=flat-square" alt="Code style: black">
+  </a>
+  <a href="https://www.mkdocs.org/">
+    <img src="https://img.shields.io/badge/docs-mkdocs-green?style=flat-square" alt="Docs: mkdocs">
+  </a>
+</p>
+
+
 **Typeflow is a modern visual workflow engine for Python**, enabling developers to design, validate, and execute **fully type-safe workflows** using a clean **drag-and-drop editor**.
 
 Typeflow brings together:
@@ -82,7 +115,7 @@ root/
 Install Typeflow from PyPI:
 
 ```bash
-pip install typeflow
+pip install typeflowapp
 ```
 
 Create a new Typeflow project:
@@ -183,6 +216,12 @@ Docs include:
 - Contribution standards  
 
 ---
+
+## Examples
+
+You can view this repository to see a real example of Ai agent created using typeflow framework, which you can install using typeflow and run it.
+
+**[Skill AI](https://github.com/SrabanMondal/SkillAI)**
 
 ## Contributing
 

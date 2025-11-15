@@ -298,4 +298,8 @@ In Editor, the **Watermark.apply** method outputs **Image**, so you can remove t
 - Experiment with class-based logic nodes  
 - Or embed Typeflow in your own tools as an orchestrator backend
 
+## More examples
+
+Check this repository to see a real example of typeflow usage: **[Skill AI](https://github.com/SrabanMondal/SkillAI)**
+
 ---
