@@ -41,7 +41,7 @@ The left sidebar contains tabs to organize all available building blocks:
 > **Tip**: For deleting node in editor, click on it and press DELETE/ DEL/ BACKSPACE key.
 
 <!-- Placeholder for image -->
-![Sidebar with Tabs](../assets/emptyEditor.png)
+![Sidebar with Tabs](assets/emptyEditor.png)
 
 ---
 
@@ -58,7 +58,7 @@ Each node appears as a visual block. You can:
 Connections represent **data dependencies** — just like function pipelines in code.
 
 <!-- Placeholder for image -->
-![Connected Nodes Example](../assets/executed.png)
+![Connected Nodes Example](assets/executed.png)
 
 ---
 
@@ -109,7 +109,7 @@ Here’s a complete image-processing workflow built in the editor:
 6. Save output image  
 
 <!-- Placeholder for full screenshot -->
-![Full Image Processing DAG](../assets/imageflow.png)
+![Full Image Processing DAG](assets/imageflow.png)
 
 ---
 

@@ -147,7 +147,7 @@ Typeflow starts a **FastAPI server** that serves the **Next.js React Flow UI** a
 **`http://localhost:3001`**
 
 <!-- Placeholder Image -->
-![Typeflow Editor Home](../assets/emptyEditor.png)  
+![Typeflow Editor Home](assets/emptyEditor.png)  
 *Caption: The visual workflow editor with node sidebar and canvas.*
 
 Now you can:
@@ -160,7 +160,7 @@ Now you can:
 **Note**: Double-click on TextFormatter node to see list of methods and click it to add method node in editor. Double click again to hide the list.
 
 <!-- Placeholder Image -->
-![Connected Workflow Example](../assets/dag.png)  
+![Connected Workflow Example](assets/dag.png)  
 *Caption: “Input string val → TextFormatter.format → WordCounter → Output text output” workflow.*
 
 Once you have built a similar DAG. Now you can input something in string_val. Then click on **Export** button.
@@ -199,7 +199,7 @@ This triggers **live execution** with **real-time SSE updates**.
 As the nodes run, you’ll see progress **streaming in the editor console**.
 
 <!-- Placeholder Image -->
-![Live Execution Preview](../assets/executed.png)  
+![Live Execution Preview](assets/executed.png)  
 *Caption: Live workflow execution updates via SSE inside the editor.*
 
 **Note**: When you run from editor, you don't need to run compile and generate commands at terminal. **Start** button will take the dag, compile, generate and run for you. You can just watch your workflow being compiled. And iterate over it, change inputs and see live run.
