@@ -38,9 +38,10 @@ The left sidebar contains tabs to organize all available building blocks:
 | **Outputs**    | Terminal nodes that produce or save the final result |
 
 > **Tip**: Drag any node from the sidebar into the main canvas to add it to your workflow.
+> **Tip**: For deleting node in editor, click on it and press DELETE/ DEL/ BACKSPACE key.
 
 <!-- Placeholder for image -->
-![Sidebar with Tabs](https://via.placeholder.com/300x600?text=Sidebar+Tabs)
+![Sidebar with Tabs](../assets/emptyEditor.png)
 
 ---
 
@@ -57,7 +58,7 @@ Each node appears as a visual block. You can:
 Connections represent **data dependencies** — just like function pipelines in code.
 
 <!-- Placeholder for image -->
-![Connected Nodes Example](https://via.placeholder.com/800x500?text=Simple+DAG+on+Canvas)
+![Connected Nodes Example](../assets/executed.png)
 
 ---
 
@@ -70,9 +71,6 @@ At the top, you’ll find three primary controls:
 | **Export**   | Export the current DAG as `dag.json` (great for version control or sharing) |
 | **Import**   | Import a previously saved DAG to continue editing |
 | **Start**    | **Compile and run** your workflow directly from the editor |
-
-<!-- Placeholder for image -->
-![Toolbar Buttons](https://via.placeholder.com/600x80?text=Export+%7C+Import+%7C+Start)
 
 ---
 
@@ -87,8 +85,6 @@ When you press **Start**:
    - Executes it in an **async subprocess**  
 3. **Real-time logs & events** stream back via **Server-Sent Events (SSE)**  
 
-<!-- Placeholder for diagram -->
-![Frontend to Backend Flow](https://via.placeholder.com/900x400?text=Frontend+%E2%86%92+FastAPI+%E2%86%92+Orchestrator+%E2%86%92+SSE)
 
 ---
 
@@ -113,7 +109,7 @@ Here’s a complete image-processing workflow built in the editor:
 6. Save output image  
 
 <!-- Placeholder for full screenshot -->
-![Full Image Processing DAG](https://via.placeholder.com/1200x700?text=Complete+Image+Processing+Workflow)
+![Full Image Processing DAG](../assets/imageflow.png)
 
 ---
 
@@ -125,7 +121,6 @@ Once your workflow is ready:
 - Run these CLI commands to run in terminal:
 
 ```bash
-typeflow validate
 typeflow compile
 typeflow generate
 typeflow run

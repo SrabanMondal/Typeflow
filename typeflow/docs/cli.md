@@ -30,13 +30,14 @@ It can:
 |--------------------------------|-------------------------------------------------------------------------------------|
 | `typeflow setup`               | Initializes a new Typeflow project with virtual environment and `uv` integration    |
 | `typeflow add <package>`       | Adds a dependency to the workflow using `uv`                                        |
-| `typeflow install`             | Installs dependencies and sets up venv for existing workflows                       |
+| `typeflow install`             | Installs dependencies and sets up venv for existing workflows                     |
 | `typeflow validate`            | Validates the `workflow.yaml` and DAG structure                                     |
 | `typeflow compile`             | Compiles DAG (from `.typeflow/dag.json`) to internal adjacency data                 |
 | `typeflow generate`            | Generates executable orchestrator script at `src/orchestrator.py`                   |
 | `typeflow run`                 | Runs the compiled workflow synchronously                                            |
 | `typeflow create-node <name>`  | Creates a node folder with `name` under src/nodes with main.py where you define your function |
 | `typeflow create-class <name>` | Creates a class file with `name` under src/classes where you define your class |
+| `typeflow start-ui` | Runs the python fastapi server to serve frontend edior along with some apis. |
 
 ---
 
@@ -89,6 +90,7 @@ typeflow install
 ```
 
 It will:
+
 - Ensure `.venv` exists (create if missing)  
 - Install all listed dependencies  
 - Verify environment setup  
@@ -108,22 +110,29 @@ Next: run 'typeflow validate' and 'typeflow compile'
 
 ### `typeflow validate`
 
-Scans the project structure, ensuring that:
-- `workflow.yaml` exists  
-- All declared nodes and classes are discoverable  
-- DAG consistency can be checked  
+The validate command helps you verify that your nodes, classes, and workflow configurations are correctly defined.
 
-```bash
-typeflow validate
-```
+It includes three subcommands:
 
-**Example output:**
+- `typeflow validate node [NODE_NAME]`
 
-```text
-Validating workflow...
-workflow.yaml found
-All nodes and classes resolved
-```
+Validates node definitions under src/nodes/.
+
+No argument: validates all nodes.
+
+With NODE_NAME: validates only the specified node.
+
+- `typeflow validate class [CLASS_NAME]`
+
+Validates class definitions under src/class/.
+
+No argument: validates all classes.
+
+With CLASS_NAME: validates only the specified class.
+
+- `typeflow validate workflow`
+
+Validates the entire workflow by checking all referenced nodes and classes inside workflow.yaml.
 
 ---
 
@@ -181,6 +190,18 @@ typeflow run
 ```
 
 If the workflow is launched from the Editor, this command is executed **asynchronously via FastAPI**, with real-time SSE updates streamed to the frontend.
+
+---
+
+### `typeflow start-ui`
+
+Starts the visual editor at `http://localhost:3001`.
+
+```bash
+typeflow start-ui
+```
+
+This is our drag drop editor to visually program and execute your workflows.
 
 ---
 

@@ -1,143 +1,310 @@
 # Class Node Guide
 
-Class nodes encapsulate **stateful or reusable logic**.  
-They are perfect for tasks that need **persistent attributes** or **configuration** across multiple steps in a workflow.
+Class nodes are one of the most powerful parts of **Typeflow**.  
+Unlike typical workflow systems that only pass plain data, Typeflow lets you work with **actual Python objects** — **instantiated, passed around, accessed, and used visually**.
+
+A class node represents a **real object instance** inside the workflow graph.  
+You can:
+
+- Instantiate objects  
+- Receive objects returned by other nodes  
+- Access object fields  
+- Call object methods  
+- Pass objects to functions or other class nodes  
+
+This makes Typeflow a true **visual object-oriented programming system**.
 
 ---
 
-## Structure
+## 1. Creating a Class Node
 
-Each class node lives under:
+Every class node lives under:
 
-```
+```plain
 src/classes/<ClassName>.py
 ```
 
-A class node is defined using the **`@node_class` decorator**.
+Created using:
 
----
+```bash
+typeflow create-class MyClass
+```
 
-## Simple Class Example
+A class node uses the **`@node_class` decorator**.
+
+### Example
 
 ```python
 from typeflow import node_class
-from PIL import Image, ImageFilter
 
 @node_class
 class BlurFilter:
     radius: float = 2.5
 
-    def apply(self, img: Image.Image) -> Image.Image:
-        """Apply a Gaussian blur."""
-        return img.filter(ImageFilter.GaussianBlur(self.radius))
+    def apply(self, img):
+        """Apply blur using configured radius."""
+        # implementation
+        ...
 ```
 
-### Notes:
-
-- `@node_class` **automatically creates `__init__`** to populate class fields  
-- **Do not define `__init__` manually** — only use typed fields  
-- Methods like `.apply()` become **nodes in the editor**  
-- Dunder methods (`__str__`, `__repr__`, etc.) are **ignored** by compiler and editor  
+**Note**: When you want different objects, then just drag another class node. Each class node in editor is a unique object instance. If you want to have different object, just drag more class nodes.
 
 ---
 
-## Class Lifecycle
+## 2. How Class Nodes Actually Work
 
-```bash
-# 1. Create class scaffold
-typeflow create-class BlurFilter
+Understanding this unlocks the real power of Typeflow.
 
-# 2. Edit the file
-# → src/classes/BlurFilter.py
+### 2.1 Class Node = Instance of a Class
 
-# 3. Validate class
-typeflow validate class BlurFilter
+When you **drag a class node into the editor**, you're not placing a class definition.  
+You’re placing an **object instance**.
 
-# 4. Use inside editor or DAG
+- **Left-side ports** = constructor inputs  
+  These populate class fields — essentially calling:
+
+  ```python
+  obj = BlurFilter(radius=2.5)
+  ```
+
+- **Right-side ports** = field outputs  
+  You can pass these fields to other nodes:
+
+  ```plain
+  obj.radius → next_node.input
+  ```
+
+---
+
+### 3. Passing Objects (Self Ports)
+
+Every class node has **two special ports** for passing entire objects:
+
+#### **self input port**
+
+Use this when a function returns an object of the same class.
+
+```plain
+(SomeFunction returns UserProfile)
+        ↓
+UserProfile class node (self port)
+```
+
+**Meaning**:  
+"Use the returned object instance for this class node."  
+Conceptually like **assignment** or a **copy constructor** in OOP.
+
+#### **self output port**
+
+Use this to pass the **entire object instance** to another node:
+
+```plain
+UserProfile.self → ValidateUser(input=obj)
 ```
 
 ---
 
-## Complex Class Example — Single File
+### 4. Calling Methods (Subnodes)
+
+When you **double-click** a class node, a **mini method-toolbar** appears (not in the sidebar).  
+Clicking a method creates an **M-node (method node)**, visually connected to the class:
+
+```plain
+[Class Node] --self--> [Method Node]
+```
+
+Method nodes work **exactly like function nodes**:
+
+- Take inputs  
+- Take `self`  
+- Output return value  
+
+The backend treats method nodes as **class-method calls**:
+
+```python
+obj.method(...)
+```
+
+---
+
+## 5. Full Example — Easy to Understand
+
+Let’s build a simple `Counter` class.
 
 ```python
 from typeflow import node_class
-from typing import List
-import math
 
 @node_class
-class StatsProcessor:
-    data: List[float]
+class Counter:
+    start: int = 0
 
-    def mean(self) -> float:
-        """Return the arithmetic mean."""
-        return sum(self.data) / len(self.data) if self.data else 0.0
+    def increment(self, step: int = 1) -> int:
+        """Return start + step."""
+        return self.start + step
 
-    def variance(self) -> float:
-        """Return the variance."""
-        m = self.mean()
-        return sum((x - m) ** 2 for x in self.data) / len(self.data) if self.data else 0.0
-
-    def stddev(self) -> float:
-        """Return the standard deviation."""
-        return math.sqrt(self.variance())
+    def double(self) -> int:
+        """Return start * 2."""
+        return self.start * 2
 ```
 
-### Developer Notes
+### In the Editor
 
-- **Fields** → become inputs when instantiating the class node  
-- **Methods** → treated as **function nodes** in the editor  
-- Always use **type hints and docstrings** → enables metadata & validation  
-- Keep logic **deterministic**; avoid I/O or global state  
-- Complex helper logic can be written **in-file** as private/static functions  
+#### Step 1: Instantiate it
+
+```plain
+[start] → (Counter)
+```
+
+This constructs:
+
+```python
+counter_obj = Counter(start=value)
+```
+
+#### Step 2: Use method nodes
+
+```plain
+Counter.start → other_node
+Counter.double → other_node
+Counter.increment → other_node
+```
+
+Each is:
+
+```python
+counter_obj.double()
+counter_obj.increment(step)
+```
+
+#### Step 3: Use objects returned by functions
+
+If a function returns a new `Counter` object, connect it to `.self`:
+
+```plain
+build_counter() → Counter.self
+```
+
+**Meaning**:
+
+```python
+counter_obj = build_counter()
+```
 
 ---
 
-## Type and Validation Notes
+## 6. Advanced Example – Object Flow
 
-| Requirement                  | Details |
-|-----------------------------|--------|
-| **Fields**                  | Must be type-annotated class attributes |
-| **Methods**                 | Must annotate all inputs and outputs |
-| **Supported types**         | `int`, `float`, `str`, `bool`, `list`, `tuple`, `dict`, `Callable`, `Any` |
-| **Advanced types**          | `TypedDict`, `TypedTuple` allowed but **limited validation** |
+```python
+from typeflow import node_class
 
-**Validate your class:**
+@node_class
+class TextBox:
+    text: str
+    width: int
+    height: int
+
+    def summary(self) -> str:
+        return f"{self.text} ({self.width}x{self.height})"
+```
+
+Create two `TextBox` nodes:
+
+```plain
+[text] → TB1 ← [width] [height]
+```
+
+Call method:
+
+```plain
+TB1.self → TB1.summary → Output
+```
+
+Receive object from somewhere else:
+
+```plain
+GenerateSizes() → TB2.self
+[text] → TB2
+```
+
+This uses the **returned object** for all methods and field access.
+
+---
+
+## 7. Important Rules & Notes
+
+| Rule | Requirement |
+|------|-------------|
+| **Do NOT define `__init__`** | Typeflow generates it automatically from typed fields |
+| **Dunder methods are ignored** | `__repr__`, `__str__`, `__hash__`, etc. — don’t appear as nodes or fields |
+| **Type hints are required** | Both fields and methods must be typed |
+| **Complex logic allowed** | Everything inside methods is just Python |
+| **One class = one file** | Avoid splitting unless necessary |
+
+---
+
+## 8. Supported Use Cases
+
+Class nodes let you model:
+
+- Processing pipelines with **internal state**  
+- **Configurable reusable logic**  
+- **Multi-method tools** (like a mini SDK)  
+- **Agent states** (memory, persona, goals)  
+- **Structured AI prompts**  
+- **Runtime objects** like Images, Models, DB clients  
+- **ANY Python class** with pure logic  
+
+> **Typeflow class nodes make workflows feel like visual OOP.**
+
+---
+
+## 9. Validation
+
+Validate class definition:
 
 ```bash
-typeflow validate class StatsProcessor
+typeflow validate class MyClass
 ```
 
----
+This ensures:
 
-## Best Practices
-
-| Do | Avoid |
-|------|----------|
-| Keep class nodes **focused** — one responsibility | Overloading with unrelated logic |
-| Use **methods** for complex logic | Heavy work in field defaults |
-| **Dunder & private attrs** (`_var`) ignored in DAG | Using them for workflow logic |
-| Write **docstrings for every method** | Missing tooltips in editor |
-| Use **single file** for moderate complexity | Premature `utils/` folders |
+- Fields are typed  
+- Methods are typed  
+- Docstrings exist  
+- Class can be instantiated  
 
 ---
 
-## Rocket Summary
+## 10. Developer Notes
 
-| Command                            | Description |
-|------------------------------------|-------------|
-| `typeflow create-class <name>`     | Scaffold a new class node |
-| `typeflow validate class <name>`   | Validate fields and methods |
-| `typeflow compile`                 | Build workflow DAG |
-| `typeflow generate`                | Create orchestrator script |
-| `typeflow run`                     | Execute compiled workflow |
+| Concept | Meaning |
+|--------|--------|
+| **Fields** | Inputs & outputs (constructor & getters) |
+| **Methods** | Extra nodes in canvas |
+| **self input** | Use an existing instance |
+| **self output** | Pass object to another node |
+| **Instance flow** | Full object can travel through workflow |
+
+---
+
+## 11. Summary
+
+**Class nodes** allow you to define **rich, stateful, object-oriented logic** in Typeflow.  
+You can:
+
+- Instantiate classes  
+- Call methods  
+- Pass objects around  
+- Build entire systems **visually**
+
+This is **one of the most unique features of Typeflow** — not found in **n8n, Node-RED, Airflow, LangChain**, or any standard workflow tool.
 
 ---
 
 ## Next Steps
 
-After class nodes are ready, combine them with function nodes in the editor to orchestrate workflows.
+Once you understand class nodes, combine them with **function nodes** to build **powerful visual pipelines**.
 
-See **[editor.md](./editor.md)** for instructions on connecting nodes and building DAGs visually.
+See **[editor.md](./editor.md)** to learn how to connect class nodes inside the editor.
 
 ---

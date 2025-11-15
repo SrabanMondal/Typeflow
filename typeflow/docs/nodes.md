@@ -78,6 +78,8 @@ Each `@node()`-decorated function becomes part of the **workflow ecosystem**.
 | **Keep functions pure**              | Avoid global state or external mutations |
 | **Use standard types**               | `int`, `float`, `str`, `bool`, `tuple`, `list`, `dict`, `Callable`, `Any`, `Class` supported |
 
+**Note**: If you want to reuse function in multiple places, then don't use the same node, drag more nodes of same function into editor, and use them to different areas. Each function nodes even if same produces different(unique) outputs, so you can run the function with different inputs multiple times and get different output. So each node take **single input per input port**.
+
 ---
 
 ## Example: Image Resize Node

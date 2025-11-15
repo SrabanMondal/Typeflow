@@ -1,4 +1,4 @@
-# ⚡ Quickstart — Build an Image Workflow
+# ⚡Image Processing Workflow
 
 Let’s build a **real image processing pipeline** using Typeflow.  
 In this tutorial, we’ll build a workflow that:
@@ -217,6 +217,12 @@ In the visual editor:
 7. Connect **adjust_brightness** → **Watermark.apply**
 8. Finally connect → **save_image**  
 9. Add an **string_val** Input node to specify your output file path. You can copy the folder path from ur laptop and paste it with added output image name.
+
+Your final DAG should like this.
+![Typeflow Editor Home](../assets/imageflow.png)  
+*Caption: The image processing pipeline.*
+
+**Note**: You can see the name of input nodes in graph are different. You can also change your input node names for visual clarity.
 
 Hit **Export** to save the graph as `workflow/dag.json`.
 

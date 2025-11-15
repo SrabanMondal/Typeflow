@@ -1,6 +1,6 @@
 # Typeflow Visual Editor  
 
-**A Visual Programming Interface for Building & Running Workflows**
+## A Visual Programming Interface for Building & Running Workflows
 
 The **Typeflow Editor** is a **Next.js + React Flow–powered visual builder** that lets you **design, edit, and execute** workflows created using the **Typeflow framework**.  
 It provides a **drag-and-drop interface** for composing **function nodes**, **class nodes**, and **input/output nodes** into **executable DAGs**.
@@ -45,6 +45,9 @@ Built-in input nodes such as:
 - `float`  
 - `bool`  
 - `tuple`  
+- `list`
+- `set`
+- `dict`
 - `file input`
 
 These allow you to **pass runtime values** when executing workflows.
@@ -73,7 +76,8 @@ Built-in output nodes to **view results directly** in the editor:
 
 - Text output  
 - Image display  
-- File output
+- Json output  
+- Table output (*needs more support*)
 
 ---
 
@@ -129,7 +133,7 @@ The top toolbar contains **three core actions**:
 Class nodes represent Python classes decorated with `@node_class`.  
 Each class appears as:
 
-```
+```plain
 +----------------------+
 |     MyClass          |
 +----------------------+
@@ -150,7 +154,7 @@ Each class appears as:
 
 This creates a node chain like:
 
-```
+```plain
 [MyClass] → [MyClass.apply()]
 ```
 
@@ -201,8 +205,8 @@ Each node includes:
   - `description`  
   - `inputPorts[]`  
   - `outputPorts[]`  
-  - `class methods` (if class node)  
-  - `status` (after run)
+  - `returns?`
+  - `value?`
 
 ### `connections[]`
 

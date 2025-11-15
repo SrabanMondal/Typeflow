@@ -89,7 +89,7 @@ def word_counter(text: str) -> int:
 Class nodes are **stateful** — ideal for **reusable logic** or **configuration**.
 
 ```bash
-typeflow create-class text_formatter
+typeflow create-class TextFormatter
 ```
 
 Then open:
@@ -110,7 +110,7 @@ class TextFormatter:
 
     def format(self, text: str) -> str:
         """Add prefix and suffix to a given text."""
-        return f"{self.prefix}{text}{self.suffix}"
+        return f"{self.prefix} {text} {self.suffix}"
 ```
 
 ---
@@ -120,7 +120,8 @@ class TextFormatter:
 Before using them, **validate**:
 
 ```bash
-typeflow validate
+typeflow validate node
+typeflow validate class
 ```
 
 You should see:
@@ -146,7 +147,7 @@ Typeflow starts a **FastAPI server** that serves the **Next.js React Flow UI** a
 **`http://localhost:3001`**
 
 <!-- Placeholder Image -->
-![Typeflow Editor Home](https://via.placeholder.com/1200x700?text=Typeflow+Editor+Home+UI)  
+![Typeflow Editor Home](../assets/emptyEditor.png)  
 *Caption: The visual workflow editor with node sidebar and canvas.*
 
 Now you can:
@@ -156,15 +157,19 @@ Now you can:
 - Add an **Input Node** and an **Output Node**  
 - Use sidebar tabs: **Input / Function / Class / Output**
 
+**Note**: Double-click on TextFormatter node to see list of methods and click it to add method node in editor. Double click again to hide the list.
+
 <!-- Placeholder Image -->
-![Connected Workflow Example](https://via.placeholder.com/1000x600?text=Input+%E2%86%92+TextFormatter+%E2%86%92+WordCounter+%E2%86%92+Output)  
-*Caption: “Input → TextFormatter.format → WordCounter → Output” workflow.*
+![Connected Workflow Example](../assets/dag.png)  
+*Caption: “Input string val → TextFormatter.format → WordCounter → Output text output” workflow.*
+
+Once you have built a similar DAG. Now you can input something in string_val. Then click on **Export** button.
 
 ---
 
 ## 8. Compile and Generate
 
-Once your **DAG (graph)** is ready, compile and generate its **runnable orchestrator script**:
+Once your **DAG (graph)** is exported. You can stop the fastapi server or use another terminal to compile and generate its **runnable orchestrator script**:
 
 ```bash
 typeflow compile
@@ -174,15 +179,30 @@ typeflow generate
 You’ll see:
 
 ```text
+Validating DAG...
+
 Generating orchestrator script...
 Orchestrator generated at: src/orchestrator.py
 ```
 
 ---
 
-## Button 9. Run the Workflow
+## 9. Run the Workflow
 
 You can run it in **two ways**:
+
+### A. From the Editor
+
+Click the **Start button** on the top bar.  
+This triggers **live execution** with **real-time SSE updates**.
+
+As the nodes run, you’ll see progress **streaming in the editor console**.
+
+<!-- Placeholder Image -->
+![Live Execution Preview](../assets/executed.png)  
+*Caption: Live workflow execution updates via SSE inside the editor.*
+
+**Note**: When you run from editor, you don't need to run compile and generate commands at terminal. **Start** button will take the dag, compile, generate and run for you. You can just watch your workflow being compiled. And iterate over it, change inputs and see live run.
 
 ### A. From Terminal
 
@@ -192,16 +212,7 @@ typeflow run
 
 Runs the orchestrator (`python -m src.orchestrator`).
 
-### B. From the Editor
-
-Click the **Start button** on the top bar.  
-This triggers **live execution** with **real-time SSE updates**.
-
-As the nodes run, you’ll see progress **streaming in the editor console**.
-
-<!-- Placeholder Image -->
-![Live Execution Preview](https://via.placeholder.com/1000x600?text=Live+Execution+with+SSE+Updates)  
-*Caption: Live workflow execution updates via SSE inside the editor.*
+**Note**: If you want to run from terminal, and want to see the output in terminal like you saw in editor. You need to replace the Output node of editor with your custom node that takes the integer return of `word_counter` and prints in console/terminal. Then go back in editor, refresh it, to see that node added in Functions Sidebar tab, drag it and connect: `word_count:returns`->`console:input`. (*Assuming your custom node name is console that takes input arg and prints in terminal*)
 
 ---
 
@@ -245,6 +256,5 @@ You just:
 
 - Check out **[examples.md](./examples.md)** for a more advanced **image-processing pipeline**  
 - Explore **Node Definition Guide** and **Class Node Guide**  
-- Or **contribute** to Typeflow’s evolution — see **[Contributing.md](./contributing.md)**
 
 ---
