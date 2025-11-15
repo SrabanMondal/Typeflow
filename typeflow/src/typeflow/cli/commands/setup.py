@@ -67,12 +67,7 @@ def setup(app_name: str):
     typer.echo("Installing typeflow inside project .venv...")
     try:
         subprocess.run(
-            ["uv", "add", "pip"],
-            cwd=root,
-            check=True,
-        )
-        subprocess.run(
-            ["uv", "pip", "install", "--pre", "typeflowapp"],
+            ["uv", "add", "typeflow"],
             cwd=root,
             check=True,
         )
@@ -94,3 +89,6 @@ def setup(app_name: str):
     )
 
     typer.echo(f"\nWorkflow project '{app_name}' created successfully!")
+    typer.echo("Note: For adding depedencies and libraries, we recommend you to use"
+               " `typeflow add <package>` to use  instead pf pip or uv and for remove:"
+               " `typeflow remove <package>`.\nEg. `typeflow add numpy pandas`")

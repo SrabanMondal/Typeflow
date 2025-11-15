@@ -69,7 +69,7 @@ def install(
 
         typer.echo("📦 Installing typeflow inside project .venv...")
         try:
-            run_cmd(["uv", "add", "pip"], cwd=root)
+            # run_cmd(["uv", "add", "pip"], cwd=root)
             run_cmd(["uv", "add", "typeflow"], cwd=root)
             typer.echo("✅ typeflow installed in project .venv!\n")
         except subprocess.CalledProcessError as e:

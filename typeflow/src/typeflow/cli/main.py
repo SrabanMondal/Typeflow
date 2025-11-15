@@ -2,6 +2,7 @@ import typer
 
 from .commands import (
     add,
+    remove,
     compile_graph,
     create_class,
     create_node,
@@ -30,6 +31,7 @@ app.command()(setup.setup)
 app.command()(create_class.create_class)
 app.command()(create_node.create_node)
 app.command()(add.add)
+app.command()(remove.remove)
 app.command()(compile_graph.compile)
 app.command()(generate.generate)
 app.command()(start_ui.start_ui)

@@ -30,6 +30,7 @@ It can:
 |--------------------------------|-------------------------------------------------------------------------------------|
 | `typeflow setup`               | Initializes a new Typeflow project with virtual environment and `uv` integration    |
 | `typeflow add <package>`       | Adds a dependency to the workflow using `uv`                                        |
+| `typeflow remove <package>`       | Removes dependency from the workflow using `uv`                                        |
 | `typeflow install`             | Installs dependencies and sets up venv for existing workflows                     |
 | `typeflow validate`            | Validates the `workflow.yaml` and DAG structure                                     |
 | `typeflow compile`             | Compiles DAG (from `.typeflow/dag.json`) to internal adjacency data                 |

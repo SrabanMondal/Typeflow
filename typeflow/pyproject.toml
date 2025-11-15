@@ -1,7 +1,7 @@
 [project]
 name = "typeflowapp"
-version = "0.0.3"
-description = ""
+version = "0.0.4"
+description = "A visual programming interface for node based programming in python"
 authors = [
     {name = "Sraban Mondal",email = "srabanmondal1@gmail.com"}
 ]
