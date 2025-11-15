@@ -237,8 +237,8 @@ We welcome contributions for:
 
 See:
 
-- [`typeflow/CONTRIBUTING.md`](../typeflow/CONTRIBUTING.md)  
-- [`editor/CONTRIBUTING.md`](../editor/CONTRIBUTING.md)  
+- [`typeflow/CONTRIBUTING.md`](typeflow/docs/contributing.md)  
+- [`editor/CONTRIBUTING.md`](editor/CONTRIBUTING.md)  
 
 ---
 
