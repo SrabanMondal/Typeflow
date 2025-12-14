@@ -141,7 +141,7 @@ typeflow start-ui
 Clone this repo:
 
 ```bash
-git clone https://github.com/<your-name>/typeflow.git
+git clone https://github.com/SrabanMondal/typeflow.git
 cd typeflow
 ```
 
